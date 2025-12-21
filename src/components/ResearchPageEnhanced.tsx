@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Comparison, { ComparisonItem } from "./comparison";
+import Comparison, { ComparisonHandle, ComparisonItem } from "./comparison";
 import baselineArtery from "../assets/comparison/baseline_artery.png";
 import tffmArtery from "../assets/comparison/tffm_artery.png";
 import baselineVein from "../assets/comparison/baseline_vein.png";
@@ -613,30 +613,31 @@ const ResearchPageEnhanced: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <Comparison className="w-full aspect-video rounded-lg overflow-hidden border-2 border-slate-400">
+              <Comparison className="w-full aspect-video rounded-lg overflow-hidden bg-black">
                 <ComparisonItem position="left" className="w-full h-full">
                   <img
                     src={baselineArtery}
                     alt="Baseline Segmentation"
-                    className="w-full h-full object-contain bg-black"
+                    className="w-full h-full object-contain"
                   />
                 </ComparisonItem>
-                <ComparisonItem position="right" className="w-full h-full">
+                <ComparisonItem position="right">
                   <img
                     src={tffmArtery}
                     alt="TFFM Segmentation"
-                    className="w-full h-full object-contain bg-black"
+                    className="w-full h-full object-contain"
                   />
                 </ComparisonItem>
+                <ComparisonHandle position={50} />
               </Comparison>
             </div>
 
             <div className="flex justify-between px-2 mb-4">
-              <span className="text-sm font-semibold text-slate-700">
-                ← Baseline Artery
+              <span className="text-sm font-semibold text-[#9B59B6]">
+                Baseline Vein
               </span>
-              <span className="text-sm font-semibold text-slate-700">
-                TFFM Method (Ours) →
+              <span className="text-sm font-semibold text-[#E74C3C]">
+                TFFM Method (Ours)
               </span>
             </div>
 
@@ -688,30 +689,31 @@ const ResearchPageEnhanced: React.FC = () => {
             </div>
 
             <div className="mb-6">
-              <Comparison className="w-full aspect-video rounded-lg overflow-hidden border-2 border-slate-400">
+              <Comparison className="w-full aspect-video rounded-lg overflow-hidden bg-black">
                 <ComparisonItem position="left" className="w-full h-full">
                   <img
                     src={baselineVein}
                     alt="Baseline Vein Segmentation"
-                    className="w-full h-full object-contain bg-black"
+                    className="w-full h-full object-contain"
                   />
                 </ComparisonItem>
-                <ComparisonItem position="right" className="w-full h-full">
+                <ComparisonItem position="right">
                   <img
                     src={tffmVein}
                     alt="TFFM Vein Segmentation"
-                    className="w-full h-full object-contain bg-black"
+                    className="w-full h-full object-contain"
                   />
                 </ComparisonItem>
+                <ComparisonHandle position={50} />
               </Comparison>
             </div>
 
             <div className="flex justify-between px-2 mb-4">
-              <span className="text-sm font-semibold text-slate-700">
-                ← Baseline Vein
+              <span className="text-sm font-semibold text-[#F39C12]">
+                Baseline Vein
               </span>
-              <span className="text-sm font-semibold text-slate-700">
-                TFFM Method (Ours) →
+              <span className="text-sm font-semibold text-[#3498DB]">
+                TFFM Method (Ours)
               </span>
             </div>
 

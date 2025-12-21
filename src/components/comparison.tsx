@@ -9,15 +9,13 @@ interface ComparisonItemProps {
 
 const ComparisonItem: React.FC<ComparisonItemProps> = ({
   children,
-  position,
   className = "",
 }) => {
-  const baseClasses =
-    position === "left"
-      ? "absolute inset-0 overflow-hidden"
-      : "absolute inset-0 overflow-hidden";
-
-  return <div className={`${baseClasses} ${className}`}>{children}</div>;
+  return (
+    <div className={`absolute inset-0 overflow-hidden ${className}`}>
+      {children}
+    </div>
+  );
 };
 
 interface ComparisonHandleProps {
@@ -27,34 +25,21 @@ interface ComparisonHandleProps {
 const ComparisonHandle: React.FC<ComparisonHandleProps> = ({ position }) => {
   return (
     <div
-      className="absolute top-0 bottom-0 w-1.5 bg-linear-to-r from-blue-500 to-blue-600 cursor-ew-resize z-10 shadow-lg"
+      className="absolute top-0 bottom-0 w-0.5 bg-gray-200 cursor-ew-resize z-20"
       style={{ left: `${position}%` }}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-3 border-blue-600 hover:scale-110 transition-transform">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-gray-200 border border-border rounded-full flex items-center justify-center">
         <svg
-          className="w-6 h-6 text-blue-600"
+          className="w-4 h-4 text-foreground"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
+          strokeWidth={1.5}
         >
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-        <svg
-          className="w-6 h-6 text-blue-600 -ml-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
+            d="M8 9l4-4 4 4m0 6l-4 4-4-4"
           />
         </svg>
       </div>
@@ -112,28 +97,19 @@ const Comparison: React.FC<ComparisonProps> = ({
 
   useEffect(() => {
     if (isDragging) {
-      document.addEventListener("mousemove", handleMouseMove as EventListener);
-      document.addEventListener("mouseup", handleMouseUp as EventListener);
-      document.addEventListener("touchmove", handleTouchMove as EventListener);
-      document.addEventListener("touchend", handleMouseUp as EventListener);
+      document.addEventListener("mousemove", handleMouseMove);
+      document.addEventListener("mouseup", handleMouseUp);
+      document.addEventListener("touchmove", handleTouchMove);
+      document.addEventListener("touchend", handleMouseUp);
 
       return () => {
-        document.removeEventListener(
-          "mousemove",
-          handleMouseMove as EventListener
-        );
-        document.removeEventListener("mouseup", handleMouseUp as EventListener);
-        document.removeEventListener(
-          "touchmove",
-          handleTouchMove as EventListener
-        );
-        document.removeEventListener(
-          "touchend",
-          handleMouseUp as EventListener
-        );
+        document.removeEventListener("mousemove", handleMouseMove);
+        document.removeEventListener("mouseup", handleMouseUp);
+        document.removeEventListener("touchmove", handleTouchMove);
+        document.removeEventListener("touchend", handleMouseUp);
       };
     }
-  }, [isDragging, handleMouseMove, handleMouseUp, handleTouchMove]);
+  }, [isDragging]);
 
   const childrenArray = React.Children.toArray(children);
   const leftItem = childrenArray.find(
@@ -153,7 +129,7 @@ const Comparison: React.FC<ComparisonProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative overflow-hidden select-none ${className}`}
+      className={`relative overflow-hidden select-none cursor-ew-resize ${className}`}
       onMouseDown={handleMouseDown}
       onTouchStart={handleTouchStart}
     >
