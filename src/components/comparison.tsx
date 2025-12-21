@@ -27,12 +27,12 @@ interface ComparisonHandleProps {
 const ComparisonHandle: React.FC<ComparisonHandleProps> = ({ position }) => {
   return (
     <div
-      className="absolute top-0 bottom-0 w-1 bg-white cursor-ew-resize z-10"
+      className="absolute top-0 bottom-0 w-1.5 bg-linear-to-r from-blue-500 to-blue-600 cursor-ew-resize z-10 shadow-lg"
       style={{ left: `${position}%` }}
     >
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 bg-white rounded-full shadow-2xl flex items-center justify-center border-3 border-blue-600 hover:scale-110 transition-transform">
         <svg
-          className="w-6 h-6 text-gray-700"
+          className="w-6 h-6 text-blue-600"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
@@ -41,7 +41,20 @@ const ComparisonHandle: React.FC<ComparisonHandleProps> = ({ position }) => {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M8 9l4-4 4 4m0 6l-4 4-4-4"
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+        <svg
+          className="w-6 h-6 text-blue-600 -ml-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
           />
         </svg>
       </div>

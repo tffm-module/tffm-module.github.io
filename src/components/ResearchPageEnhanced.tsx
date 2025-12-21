@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import Comparison, { ComparisonItem } from "./comparison";
 import baselineArtery from "../assets/comparison/baseline_artery.png";
 import tffmArtery from "../assets/comparison/tffm_artery.png";
+import baselineVein from "../assets/comparison/baseline_vein.png";
+import tffmVein from "../assets/comparison/tffm_vein.png";
+import architectureImg from "../assets/comparison/overall-architecture_page-0001.jpg";
+import veinOverlay from "../assets/comparison/vein_tffm_vs_baseline_overlay.png";
+import tffmModuleImg from "../assets/comparison/TFFM.jpg";
+import visualizationImg from "../assets/comparison/visualization.jpg";
 
 const ResearchPageEnhanced: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
@@ -148,31 +154,31 @@ const ResearchPageEnhanced: React.FC = () => {
   ];
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-[#0A0502]">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center bg-linear-to-b from-slate-900 via-slate-800 to-slate-700 text-white px-4 py-20">
+      <section className="min-h-screen flex items-center justify-center bg-linear-to-b from-[#870000] to-[#190A05] text-white px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             TFFM: Topology-Aware Feature Fusion Module via Latent Graph
             Reasoning for Retinal Vessel Segmentation
           </h1>
 
-          <p className="text-xl text-slate-300 mb-8 max-w-3xl mx-auto">
+          <p className="text-xl text-red-100 mb-8 max-w-3xl mx-auto">
             Preserving vascular connectivity in retinal artery-vein segmentation
             through graph-based topology reasoning and hybrid loss formulation
           </p>
 
           {/* Author Information */}
           <div className="mb-10">
-            <p className="text-lg text-slate-200 mb-2">Anonymous Submission</p>
-            <p className="text-slate-400 text-sm">
+            <p className="text-lg text-red-50 mb-2">Anonymous Submission</p>
+            <p className="text-red-200 text-sm">
               WACV 2026 Algorithms Track • Paper ID: 15
             </p>
           </div>
 
           {/* Conference/Journal */}
           <div className="mb-10">
-            <span className="inline-block bg-blue-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+            <span className="inline-block bg-red-900 text-white px-4 py-2 rounded-full text-sm font-medium border border-red-700">
               Under Review - WACV 2026
             </span>
           </div>
@@ -181,19 +187,19 @@ const ResearchPageEnhanced: React.FC = () => {
           <div className="flex flex-wrap justify-center gap-4 mb-8">
             <a
               href="#pdf-link"
-              className="inline-flex items-center gap-2 bg-white text-slate-900 px-6 py-3 rounded-lg font-semibold hover:bg-slate-100 transition-colors"
+              className="inline-flex items-center gap-2 bg-amber-100 text-red-900 px-6 py-3 rounded-lg font-semibold hover:bg-amber-200 transition-colors"
             >
               📄 Paper (PDF)
             </a>
             <a
               href="#code-link"
-              className="inline-flex items-center gap-2 bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-600 transition-colors border border-slate-500"
+              className="inline-flex items-center gap-2 bg-red-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors border border-red-600"
             >
               💻 Code (Coming Soon)
             </a>
             <a
               href="#dataset-link"
-              className="inline-flex items-center gap-2 bg-slate-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-slate-600 transition-colors border border-slate-500"
+              className="inline-flex items-center gap-2 bg-red-800 text-white px-6 py-3 rounded-lg font-semibold hover:bg-red-700 transition-colors border border-red-600"
             >
               📊 Fundus-AVSeg Dataset
             </a>
@@ -201,17 +207,17 @@ const ResearchPageEnhanced: React.FC = () => {
 
           {/* Key Metrics */}
           <div className="grid grid-cols-3 gap-4 max-w-2xl mx-auto">
-            <div className="bg-slate-800 bg-opacity-50 rounded-lg p-4 border border-slate-600">
-              <p className="text-sm text-slate-300">Dice Score</p>
-              <p className="text-3xl font-bold text-green-400">90.97%</p>
+            <div className="bg-red-900 bg-opacity-60 rounded-lg p-4 border border-red-700">
+              <p className="text-sm text-red-100">Dice Score</p>
+              <p className="text-3xl font-bold text-amber-300">90.97%</p>
             </div>
-            <div className="bg-slate-800 bg-opacity-50 rounded-lg p-4 border border-slate-600">
-              <p className="text-sm text-slate-300">Fragmentation Reduction</p>
-              <p className="text-3xl font-bold text-green-400">38%</p>
+            <div className="bg-red-900 bg-opacity-60 rounded-lg p-4 border border-red-700">
+              <p className="text-sm text-red-100">Fragmentation Reduction</p>
+              <p className="text-3xl font-bold text-amber-300">38%</p>
             </div>
-            <div className="bg-slate-800 bg-opacity-50 rounded-lg p-4 border border-slate-600">
-              <p className="text-sm text-slate-300">Topology Metric</p>
-              <p className="text-3xl font-bold text-green-400">85.55%</p>
+            <div className="bg-red-900 bg-opacity-60 rounded-lg p-4 border border-red-700">
+              <p className="text-sm text-red-100">Topology Metric</p>
+              <p className="text-3xl font-bold text-amber-300">85.55%</p>
             </div>
           </div>
         </div>
@@ -588,25 +594,26 @@ const ResearchPageEnhanced: React.FC = () => {
       </section>
 
       {/* Interactive Visualization */}
-      <section className="py-20 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
             Visual Comparison: Baseline vs. TFFM
           </h2>
 
-          <div className="bg-white rounded-lg border border-slate-300 shadow-lg p-8 mb-8">
+          {/* Artery Comparison */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8 mb-12">
             <div className="mb-8">
               <h3 className="text-2xl font-semibold text-slate-900 mb-2">
-                Interactive Slider Comparison
+                Artery Segmentation: Interactive Slider Comparison
               </h3>
-              <p className="text-slate-600">
+              <p className="text-slate-600 mb-4">
                 Drag the slider to compare artery segmentation. TFFM preserves
                 vessel continuity and reduces fragmentation significantly.
               </p>
             </div>
 
             <div className="mb-6">
-              <Comparison className="w-full aspect-video rounded-lg overflow-hidden">
+              <Comparison className="w-full aspect-video rounded-lg overflow-hidden border-2 border-slate-400">
                 <ComparisonItem position="left" className="w-full h-full">
                   <img
                     src={baselineArtery}
@@ -624,20 +631,24 @@ const ResearchPageEnhanced: React.FC = () => {
               </Comparison>
             </div>
 
-            <div className="flex justify-between px-2 mb-8">
+            <div className="flex justify-between px-2 mb-4">
               <span className="text-sm font-semibold text-slate-700">
-                Baseline (Artery)
+                ← Baseline Artery
               </span>
               <span className="text-sm font-semibold text-slate-700">
-                TFFM Method (Ours)
+                TFFM Method (Ours) →
               </span>
             </div>
+
+            <p className="text-xs text-slate-500 text-center mb-8">
+              💡 Tip: Drag the slider handle to compare segmentations
+            </p>
 
             {/* Visual Improvements */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
                 <p className="font-semibold text-blue-900 mb-2">
-                  Enhanced Continuity
+                  ✓ Enhanced Continuity
                 </p>
                 <p className="text-sm text-slate-700">
                   Maintains vessel connectivity throughout the network via graph
@@ -646,7 +657,7 @@ const ResearchPageEnhanced: React.FC = () => {
               </div>
               <div className="bg-green-50 border border-green-200 rounded-lg p-4">
                 <p className="font-semibold text-green-900 mb-2">
-                  Reduced Fragmentation
+                  ✓ Reduced Fragmentation
                 </p>
                 <p className="text-sm text-slate-700">
                   38% reduction in vessel fragments (44.7 → 25.3 components)
@@ -654,10 +665,294 @@ const ResearchPageEnhanced: React.FC = () => {
               </div>
               <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
                 <p className="font-semibold text-purple-900 mb-2">
-                  Topology Preservation
+                  ✓ Topology Preservation
                 </p>
                 <p className="text-sm text-slate-700">
                   Preserves bifurcations and complex branching patterns
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Vein Comparison */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8 mb-12">
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-2">
+                Vein Segmentation: Interactive Slider Comparison
+              </h3>
+              <p className="text-slate-600 mb-4">
+                Vein segmentation demonstrates superior topology preservation
+                with TFFM, achieving 87.63% Dice score and maintaining
+                continuous vessel networks.
+              </p>
+            </div>
+
+            <div className="mb-6">
+              <Comparison className="w-full aspect-video rounded-lg overflow-hidden border-2 border-slate-400">
+                <ComparisonItem position="left" className="w-full h-full">
+                  <img
+                    src={baselineVein}
+                    alt="Baseline Vein Segmentation"
+                    className="w-full h-full object-contain bg-black"
+                  />
+                </ComparisonItem>
+                <ComparisonItem position="right" className="w-full h-full">
+                  <img
+                    src={tffmVein}
+                    alt="TFFM Vein Segmentation"
+                    className="w-full h-full object-contain bg-black"
+                  />
+                </ComparisonItem>
+              </Comparison>
+            </div>
+
+            <div className="flex justify-between px-2 mb-4">
+              <span className="text-sm font-semibold text-slate-700">
+                ← Baseline Vein
+              </span>
+              <span className="text-sm font-semibold text-slate-700">
+                TFFM Method (Ours) →
+              </span>
+            </div>
+
+            <p className="text-xs text-slate-500 text-center mb-8">
+              💡 Tip: Drag the slider handle to compare segmentations
+            </p>
+
+            {/* Vein Metrics */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="font-semibold text-blue-900 mb-2">
+                  Vein Dice: 87.63%
+                </p>
+                <p className="text-sm text-slate-700">
+                  Superior performance on vascular network segmentation
+                </p>
+              </div>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p className="font-semibold text-green-900 mb-2">
+                  clDice: 81.46%
+                </p>
+                <p className="text-sm text-slate-700">
+                  Excellent skeleton similarity and continuity metrics
+                </p>
+              </div>
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <p className="font-semibold text-purple-900 mb-2">
+                  HD95: 14.59px
+                </p>
+                <p className="text-sm text-slate-700">
+                  Precise boundary estimation for clinical accuracy
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Combined Artery-Vein Overlay */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8 mb-12">
+            <div className="mb-8">
+              <h3 className="text-2xl font-semibold text-slate-900 mb-2">
+                Combined Artery-Vein Analysis: TFFM Overlay Visualization
+              </h3>
+              <p className="text-slate-600 mb-4">
+                Direct comparison of baseline and TFFM segmentations showing
+                enhanced boundary definition and reduced vessel fragmentation in
+                combined artery-vein analysis.
+              </p>
+            </div>
+
+            <div className="mb-6 rounded-lg overflow-hidden border-2 border-slate-400 bg-black">
+              <img
+                src={veinOverlay}
+                alt="Vein TFFM vs Baseline Overlay"
+                className="w-full h-auto object-contain"
+              />
+            </div>
+
+            <div className="flex justify-between text-sm text-slate-600 px-2 mb-6">
+              <span>← Baseline Method</span>
+              <span>TFFM Segmentation (Ours) →</span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm text-slate-700">
+                  <span className="font-semibold">→</span> Enhanced vessel
+                  boundary accuracy
+                </p>
+              </div>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm text-slate-700">
+                  <span className="font-semibold">→</span> Improved connectivity
+                  preservation
+                </p>
+              </div>
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                <p className="text-sm text-slate-700">
+                  <span className="font-semibold">→</span> 38% reduction in
+                  fragmentation
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Architecture and TFFM Side by Side */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            {/* Architecture Diagram */}
+            <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8">
+              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                ① Overall System Architecture
+              </h3>
+              <p className="text-slate-600 text-sm mb-6">
+                Complete TFFM architecture diagram showing encoder-decoder
+                structure with integrated modules at multiple scales.
+              </p>
+
+              <div className="mb-6 rounded-lg overflow-hidden border-2 border-slate-400 bg-gray-100">
+                <img
+                  src={architectureImg}
+                  alt="Overall TFFM Architecture"
+                  className="w-full h-auto object-contain"
+                  style={{ maxHeight: "400px" }}
+                />
+              </div>
+
+              <div className="space-y-2 text-sm text-slate-700">
+                <p>
+                  <span className="font-semibold">⊕ Encoder:</span>{" "}
+                  EfficientNet-B0
+                </p>
+                <p>
+                  <span className="font-semibold">⊕ Decoder:</span> U-Net++ with
+                  attention gates
+                </p>
+                <p>
+                  <span className="font-semibold">⊕ TFFM:</span> 5 integrated
+                  modules for topology
+                </p>
+              </div>
+            </div>
+
+            {/* TFFM Module Details */}
+            <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8">
+              <h3 className="text-xl font-semibold text-slate-900 mb-4">
+                ② TFFM Module: Graph-Based Topology Reasoning
+              </h3>
+              <p className="text-slate-600 text-sm mb-6">
+                Feature mapping to latent graph space with Graph Attention
+                Networks for connectivity preservation.
+              </p>
+
+              <div className="mb-6 rounded-lg overflow-hidden border-2 border-slate-400 bg-gray-100">
+                <img
+                  src={tffmModuleImg}
+                  alt="TFFM Module Deep Dive"
+                  className="w-full h-auto object-contain"
+                  style={{ maxHeight: "400px" }}
+                />
+              </div>
+
+              <div className="space-y-2 text-sm text-slate-700">
+                <p>
+                  <span className="font-semibold">◉ Mapping:</span> Features →
+                  graph space
+                </p>
+                <p>
+                  <span className="font-semibold">◉ Processing:</span> Graph
+                  Attention Networks
+                </p>
+                <p>
+                  <span className="font-semibold">◉ Loss:</span> Tversky +
+                  clDice hybrid
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Comprehensive Results */}
+          <div className="bg-white border border-slate-300 rounded-lg shadow-lg p-8 mb-12">
+            <h3 className="text-2xl font-semibold text-slate-900 mb-6">
+              ④ Comprehensive Results & Performance Analysis
+            </h3>
+            <p className="text-slate-600 mb-6">
+              Ablation studies, loss curves, topology metrics, cross-dataset
+              generalization, and detailed performance comparisons.
+            </p>
+
+            <div className="mb-6 rounded-lg overflow-hidden border-2 border-slate-400 bg-gray-100">
+              <img
+                src={visualizationImg}
+                alt="Comprehensive Results Visualization"
+                className="w-full h-auto object-contain"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+              <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <p className="font-semibold text-blue-900 mb-2">
+                  📊 Ablation Study
+                </p>
+                <p className="text-slate-700">
+                  Impact of TFFM and loss functions
+                </p>
+              </div>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <p className="font-semibold text-green-900 mb-2">
+                  📊 Cross-Dataset
+                </p>
+                <p className="text-slate-700">Validation on 6 benchmarks</p>
+              </div>
+              <div className="bg-purple-50 border border-purple-200 rounded-lg p-4">
+                <p className="font-semibold text-purple-900 mb-2">
+                  📊 Topology Metrics
+                </p>
+                <p className="text-slate-700">
+                  Betti error, clDice, junction F1
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Key Findings Summary */}
+          <div className="bg-linear-to-r from-slate-50 to-blue-50 border border-slate-300 rounded-lg shadow-lg p-8">
+            <h3 className="text-2xl font-semibold text-slate-900 mb-8 text-center">
+              Summary: Key Results & Innovations
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+              <div className="bg-white border border-slate-300 rounded-lg p-6 text-center hover:shadow-md transition">
+                <div className="text-3xl font-bold text-blue-600 mb-2">①</div>
+                <p className="text-sm font-semibold text-slate-900 mb-2">
+                  System Design
+                </p>
+                <p className="text-xs text-slate-600">
+                  U-Net++ with integrated TFFM for topology-aware segmentation
+                </p>
+              </div>
+              <div className="bg-white border border-slate-300 rounded-lg p-6 text-center hover:shadow-md transition">
+                <div className="text-3xl font-bold text-green-600 mb-2">②</div>
+                <p className="text-sm font-semibold text-slate-900 mb-2">
+                  Graph Reasoning
+                </p>
+                <p className="text-xs text-slate-600">
+                  Features to graphs with attention-based connectivity
+                </p>
+              </div>
+              <div className="bg-white border border-slate-300 rounded-lg p-6 text-center hover:shadow-md transition">
+                <div className="text-3xl font-bold text-purple-600 mb-2">③</div>
+                <p className="text-sm font-semibold text-slate-900 mb-2">
+                  Performance
+                </p>
+                <p className="text-xs text-slate-600">
+                  Dice 90.97% | clDice 85.55% | 38% less fragmentation
+                </p>
+              </div>
+              <div className="bg-white border border-slate-300 rounded-lg p-6 text-center hover:shadow-md transition">
+                <div className="text-3xl font-bold text-orange-600 mb-2">④</div>
+                <p className="text-sm font-semibold text-slate-900 mb-2">
+                  Robustness
+                </p>
+                <p className="text-xs text-slate-600">
+                  Generalized across 6 external datasets successfully
                 </p>
               </div>
             </div>
