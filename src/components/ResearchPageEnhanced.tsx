@@ -7,10 +7,6 @@ const ResearchPageEnhanced: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
     "combined"
   );
-  const [expandedDataset, setExpandedDataset] = useState<string | null>(null);
-  const [selectedMetric, setSelectedMetric] = useState<
-    "accuracy" | "topology" | "boundary"
-  >("accuracy");
   const [showAblation, setShowAblation] = useState(false);
 
   // Final Results Data
@@ -154,7 +150,7 @@ const ResearchPageEnhanced: React.FC = () => {
   return (
     <div className="w-full bg-white">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700 text-white px-4 py-20">
+      <section className="min-h-screen flex items-center justify-center bg-linear-to-b from-slate-900 via-slate-800 to-slate-700 text-white px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             TFFM: Topology-Aware Feature Fusion Module via Latent Graph
@@ -275,7 +271,7 @@ const ResearchPageEnhanced: React.FC = () => {
       </section>
 
       {/* The Problem Section */}
-      <section className="py-20 px-4 bg-gradient-to-b from-red-50 to-slate-50">
+      <section className="py-20 px-4 bg-linear-to-b from-red-50 to-slate-50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-12 text-center">
             The Topology Crisis in Vessel Segmentation
@@ -353,7 +349,7 @@ const ResearchPageEnhanced: React.FC = () => {
                 Clinical Requirements for Topology
               </h3>
 
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 border border-blue-300 rounded-lg p-6 mb-6">
+              <div className="bg-linear-to-br from-blue-50 to-blue-100 border border-blue-300 rounded-lg p-6 mb-6">
                 <h4 className="font-semibold text-blue-900 mb-3">
                   Why This Matters
                 </h4>
@@ -407,7 +403,7 @@ const ResearchPageEnhanced: React.FC = () => {
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center mb-6">
               <div className="p-4 bg-slate-100 rounded-lg">
-                <div className="h-40 bg-gradient-to-b from-slate-300 to-slate-200 rounded mb-3 flex items-center justify-center text-sm text-slate-600 font-medium">
+                <div className="h-40 bg-linear-to-b from-slate-300 to-slate-200 rounded mb-3 flex items-center justify-center text-sm text-slate-600 font-medium">
                   Ground Truth
                 </div>
                 <p className="text-2xl font-bold text-slate-900">Dice: 95%</p>
@@ -416,7 +412,7 @@ const ResearchPageEnhanced: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-red-50 rounded-lg border-2 border-red-300">
-                <div className="h-40 bg-gradient-to-b from-red-200 to-red-100 rounded mb-3 flex items-center justify-center text-sm text-red-700 font-medium">
+                <div className="h-40 bg-linear-to-b from-red-200 to-red-100 rounded mb-3 flex items-center justify-center text-sm text-red-700 font-medium">
                   Fragmented <br />
                   Prediction
                 </div>
@@ -426,7 +422,7 @@ const ResearchPageEnhanced: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-green-50 rounded-lg border-2 border-green-300">
-                <div className="h-40 bg-gradient-to-b from-green-200 to-green-100 rounded mb-3 flex items-center justify-center text-sm text-green-700 font-medium">
+                <div className="h-40 bg-linear-to-b from-green-200 to-green-100 rounded mb-3 flex items-center justify-center text-sm text-green-700 font-medium">
                   Topologically <br />
                   Correct
                 </div>
@@ -525,7 +521,7 @@ const ResearchPageEnhanced: React.FC = () => {
           </div>
 
           {/* Key Innovations */}
-          <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-300 rounded-lg p-8">
+          <div className="bg-linear-to-r from-blue-50 to-purple-50 border border-blue-300 rounded-lg p-8">
             <h3 className="text-2xl font-semibold text-slate-900 mb-6">
               Key Innovations
             </h3>
@@ -700,13 +696,13 @@ const ResearchPageEnhanced: React.FC = () => {
                   Final Model Performance
                 </h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-300">
+                  <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-300">
                     <p className="text-sm text-slate-600 mb-2">Dice Score</p>
                     <p className="text-3xl font-bold text-blue-700">
                       {finalResults[activeTab].dice}%
                     </p>
                   </div>
-                  <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-300">
+                  <div className="bg-linear-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-300">
                     <p className="text-sm text-slate-600 mb-2">
                       clDice (Topology)
                     </p>
@@ -714,13 +710,13 @@ const ResearchPageEnhanced: React.FC = () => {
                       {finalResults[activeTab].clDice}%
                     </p>
                   </div>
-                  <div className="bg-gradient-to-br from-orange-50 to-orange-100 rounded-lg p-6 border border-orange-300">
+                  <div className="bg-linear-to-br from-orange-50 to-orange-100 rounded-lg p-6 border border-orange-300">
                     <p className="text-sm text-slate-600 mb-2">HD95 Distance</p>
                     <p className="text-3xl font-bold text-orange-700">
                       {finalResults[activeTab].hd95}px
                     </p>
                   </div>
-                  <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-300">
+                  <div className="bg-linear-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-300">
                     <p className="text-sm text-slate-600 mb-2">Components</p>
                     <p className="text-3xl font-bold text-green-700">
                       {finalResults[activeTab].components}
@@ -1005,7 +1001,7 @@ const ResearchPageEnhanced: React.FC = () => {
               Performance Summary
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-300 rounded-lg p-6">
+              <div className="bg-linear-to-br from-green-50 to-emerald-50 border border-green-300 rounded-lg p-6">
                 <p className="text-sm text-slate-600 mb-3 font-semibold">
                   Accuracy Improvements
                 </p>
@@ -1016,7 +1012,7 @@ const ResearchPageEnhanced: React.FC = () => {
                   <li>• HD95: 3.50 px (excellent boundary accuracy)</li>
                 </ul>
               </div>
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-300 rounded-lg p-6">
+              <div className="bg-linear-to-br from-blue-50 to-indigo-50 border border-blue-300 rounded-lg p-6">
                 <p className="text-sm text-slate-600 mb-3 font-semibold">
                   Topology Metrics (Critical)
                 </p>
@@ -1234,7 +1230,7 @@ const ResearchPageEnhanced: React.FC = () => {
       </section>
 
       {/* Conclusion */}
-      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-20 px-4 bg-linear-to-b from-blue-50 to-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-8 text-center">
             Conclusion & Impact

@@ -1,21 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import Comparison, { ComparisonItem } from "./comparison";
 import baselineArtery from "../assets/comparison/baseline_artery.png";
 import tffmArtery from "../assets/comparison/tffm_artery.png";
 
 const ResearchPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
-    "combined"
-  );
-  const [expandedDataset, setExpandedDataset] = useState<string | null>(null);
-  const [selectedMetric, setSelectedMetric] = useState<
-    "dice" | "topology" | "boundary"
-  >("dice");
-
   return (
     <div className="w-full bg-white">
       {/* Hero Section */}
-      <section className="min-h-screen flex items-center justify-center bg-gradient-to-b from-slate-900 via-slate-800 to-slate-700 text-white px-4 py-20">
+      <section className="min-h-screen flex items-center justify-center bg-linear-to-b from-slate-100 via-slate-800 to-slate-700 text-white px-4 py-20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
             Topology-aware Feature Fusion Module for Vessel Segmentation
@@ -193,7 +185,7 @@ const ResearchPage: React.FC = () => {
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
               <div className="p-4 bg-slate-100 rounded-lg">
-                <div className="h-32 bg-gradient-to-b from-slate-300 to-slate-200 rounded mb-2 flex items-center justify-center text-sm text-slate-600">
+                <div className="h-32 bg-linear-to-b from-slate-300 to-slate-200 rounded mb-2 flex items-center justify-center text-sm text-slate-600">
                   Input Image
                 </div>
                 <p className="text-sm font-medium text-slate-700">
@@ -201,7 +193,7 @@ const ResearchPage: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-slate-100 rounded-lg">
-                <div className="h-32 bg-gradient-to-b from-slate-300 to-slate-200 rounded mb-2 flex items-center justify-center text-sm text-slate-600">
+                <div className="h-32 bg-linear-to-b from-slate-300 to-slate-200 rounded mb-2 flex items-center justify-center text-sm text-slate-600">
                   Ground Truth
                 </div>
                 <p className="text-sm font-medium text-slate-700">
@@ -209,7 +201,7 @@ const ResearchPage: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-red-50 rounded-lg border border-red-300">
-                <div className="h-32 bg-gradient-to-b from-red-200 to-red-100 rounded mb-2 flex items-center justify-center text-sm text-red-600">
+                <div className="h-32 bg-linear-to-b from-red-200 to-red-100 rounded mb-2 flex items-center justify-center text-sm text-red-600">
                   Baseline Output
                 </div>
                 <p className="text-sm font-medium text-red-700">
@@ -217,7 +209,7 @@ const ResearchPage: React.FC = () => {
                 </p>
               </div>
               <div className="p-4 bg-green-50 rounded-lg border border-green-300">
-                <div className="h-32 bg-gradient-to-b from-green-200 to-green-100 rounded mb-2 flex items-center justify-center text-sm text-green-600">
+                <div className="h-32 bg-linear-to-b from-green-200 to-green-100 rounded mb-2 flex items-center justify-center text-sm text-green-600">
                   TFFM Output
                 </div>
                 <p className="text-sm font-medium text-green-700">
@@ -745,7 +737,7 @@ const ResearchPage: React.FC = () => {
       </section>
 
       {/* Conclusion */}
-      <section className="py-20 px-4 bg-gradient-to-b from-blue-50 to-white">
+      <section className="py-20 px-4 bg-linear-to-b from-blue-50 to-white">
         <div className="max-w-4xl mx-auto">
           <h2 className="text-4xl font-bold text-slate-900 mb-8 text-center">
             Conclusion
