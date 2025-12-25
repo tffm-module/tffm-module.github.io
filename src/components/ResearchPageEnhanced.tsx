@@ -15,6 +15,23 @@ const ResearchPageEnhanced: React.FC = () => {
   );
   const [showAblation, setShowAblation] = useState(false);
 
+  // Helper function to render metric boxes
+  const MetricBox = ({
+    label,
+    value,
+    icon = "📊",
+  }: {
+    label: string;
+    value: string | number;
+    icon?: string;
+  }) => (
+    <div className="metric-box">
+      <span className="metric-icon">{icon}</span>
+      <p className="metric-label">{label}</p>
+      <p className="metric-value">{value}</p>
+    </div>
+  );
+
   // Final Results Data
   const finalResults = {
     combined: { dice: 90.97, hd95: 3.5, clDice: 85.55, components: 25.3 },
