@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import ComparisonExample from "./comparison-example";
 import PaperHero from "./paper-hero";
+import Footer from "./footer";
 
 const ResearchPageTFFM: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
@@ -176,6 +177,10 @@ paperid={15}
 
   return (
     <>
+      {/* <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+      /> */}
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -1577,8 +1582,10 @@ paperid={15}
         </div>
       </section>
 
+      <Footer />
+
       {/* Footer */}
-      <footer className="footer">
+      {/* <footer className="footer">
         <div className="container">
           <div className="content has-text-centered">
             <div className="mb-4">
@@ -1603,7 +1610,7 @@ paperid={15}
             </p>
           </div>
         </div>
-      </footer>
+      </footer> */}
     </>
   );
 };
