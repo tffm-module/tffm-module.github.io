@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import ComparisonExample from "./comparison-example";
 import PaperHero from "./paper-hero";
 import Footer from "./footer";
+import CitationSection from "./citation-seciton";
 
 const ResearchPageTFFM: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
@@ -1538,79 +1539,8 @@ paperid={15}
         </div>
       </section>
 
-      {/* Citation */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Citation
-              </h2>
-
-              <div className="box has-text-centered">
-                <div
-                  className="has-background-grey-lighter p-4 mb-4"
-                  style={{ borderRadius: "10px" }}
-                >
-                  <pre
-                    className="has-text-left has-text-grey-dark"
-                    style={{ fontFamily: "monospace", overflowX: "auto" }}
-                  >
-                    {`@article{anonymous2024tffm,
-  title={TFFM: Topology-Aware Feature Fusion Module
-  via Latent Graph Reasoning for Retinal
-  Vessel Segmentation},
-  author={Anonymous},
-  journal={WACV 2026 - Algorithms Track},
-  year={2026},
-  paperid={15}
-}`}
-                  </pre>
-                </div>
-                <button
-                  onClick={handleCopyBibTeX}
-                  className="button is-dark is-rounded is-large"
-                >
-                  <span className="icon">
-                    <i className="fas fa-clipboard"></i>
-                  </span>
-                  <span>Copy BibTeX</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      <CitationSection />
       <Footer />
-
-      {/* Footer */}
-      {/* <footer className="footer">
-        <div className="container">
-          <div className="content has-text-centered">
-            <div className="mb-4">
-              <a className="icon-link mx-2" href="#pdf">
-                <i className="fas fa-file-pdf"></i>
-              </a>
-              <a className="icon-link mx-2" href="#code">
-                <i className="fab fa-github"></i>
-              </a>
-            </div>
-            <p>© 2025 TFFM Research Project. Built for WACV 2026 Submission.</p>
-            <p className="mt-2">
-              This website is licensed under a{" "}
-              <a
-                rel="license"
-                href="http://creativecommons.org/licenses/by-sa/4.0/"
-              >
-                Creative Commons Attribution-ShareAlike 4.0 International
-                License
-              </a>
-              .
-            </p>
-          </div>
-        </div>
-      </footer> */}
     </>
   );
 };
