@@ -7,7 +7,7 @@ export default function Footer() {
         <div className="flex flex-col items-center justify-center">
           <div className="text-center space-y-2">
             <p>
-              The website is inspired from{" "}
+              The website is inspired by{" "}
               <a
                 href="https://nerfies.github.io/"
                 className="inline-flex items-center text-blue-600 hover:text-blue-800 hover:underline font-medium"
