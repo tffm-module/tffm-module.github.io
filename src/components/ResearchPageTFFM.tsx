@@ -184,10 +184,6 @@ paperid={15}
   return (
     <>
       <link
-        href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet"
-      />
-      <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
       />
@@ -1055,7 +1051,7 @@ paperid={15}
                   vessel continuity and reduces fragmentation significantly.
                 </p>
 
-                <div className="comparison-container">
+                <div>
                   <Comparison className="w-full aspect-video rounded-lg overflow-hidden">
                     <ComparisonItem position="left" className="w-full h-full">
                       <img
@@ -1073,6 +1069,15 @@ paperid={15}
                     </ComparisonItem>
                     <ComparisonHandle position={50} />
                   </Comparison>
+                </div>
+
+                <div className="flex justify-between px-2 mb-4">
+                  <span className="text-sm font-semibold text-[#9B59B6]">
+                    Baseline Vein
+                  </span>
+                  <span className="text-sm font-semibold text-[#E74C3C]">
+                    TFFM (Ours)
+                  </span>
                 </div>
 
                 <div className="caption">
@@ -1106,6 +1111,15 @@ paperid={15}
                     </ComparisonItem>
                     <ComparisonHandle position={50} />
                   </Comparison>
+                </div>
+
+                <div className="flex justify-between px-2 mb-4">
+                  <span className="text-sm font-semibold text-[#F39C12]">
+                    Baseline Vein
+                  </span>
+                  <span className="text-sm font-semibold text-[#3498DB]">
+                    TFFM Method (Ours)
+                  </span>
                 </div>
 
                 <div className="caption">
