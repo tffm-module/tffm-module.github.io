@@ -191,23 +191,17 @@ paperid={15}
       <style>
         {`
         body {
-          font-family: 'Noto Sans', sans-serif;
           line-height: 1.6;
           color: #363636;
-        }
-        .tffm {
-          font-variant: small-caps;
         }
         .hero-body {
           padding-top: 3rem;
           padding-bottom: 3rem;
         }
         .publication-title {
-          font-family: 'Google Sans', sans-serif;
           line-height: 1.2;
         }
         .publication-authors {
-          font-family: 'Google Sans', sans-serif;
         }
         .section {
           padding: 4rem 1.5rem;

@@ -1,1 +1,10 @@
+@font-face {
+  font-family: LibreBaskerville;
+  src: url("/src/assets/fonts/LibreBaskerville-VariableFont_wght.ttf");
+}
+
 @import "tailwindcss";
+
+@theme {
+  --font-lb: LibreBaskerville, "sans-serif";
+}
