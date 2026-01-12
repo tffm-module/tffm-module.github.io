@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import ComparisonExample from "./comparison-example";
-import PaperHero from "./paper-hero";
 import Footer from "./footer";
 import CitationSection from "./citation-seciton";
+import AbstractSection from "./abstract-section";
+import ModelArchitectureSection from "./model-architecture-section";
 
 const ResearchPageTFFM: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
@@ -592,67 +592,6 @@ paperid={15}
         `}
       </style>
 
-      <PaperHero />
-
-      {/* Abstract Section */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Abstract
-              </h2>
-              <div className="content has-text-justified">
-                <p>
-                  Precise segmentation of retinal arteries and veins carries the
-                  diagnosis of systemic cardiovascular conditions. However,
-                  standard convolutional architectures often yield topologically
-                  disjoint segmentations, characterized by gaps and
-                  discontinuities that render reliable graph-based clinical
-                  analysis impossible despite high pixel-level accuracy.
-                </p>
-                <p>
-                  To address this, we introduce a topology-aware framework
-                  engineered to maintain vascular connectivity. Our architecture
-                  fuses a{" "}
-                  <span className="has-text-weight-semibold tffm">
-                    Topological Feature Fusion Module (TFFM)
-                  </span>{" "}
-                  that maps local feature representations into a latent graph
-                  space, deploying{" "}
-                  <span className="has-text-weight-semibold">
-                    Graph Attention Networks
-                  </span>{" "}
-                  to capture global structural dependencies often missed by
-                  fixed receptive fields. We drive the learning process with a
-                  hybrid objective function, coupling{" "}
-                  <span className="has-text-weight-semibold">Tversky loss</span>{" "}
-                  for class imbalance with{" "}
-                  <span className="has-text-weight-semibold">
-                    soft clDice loss
-                  </span>{" "}
-                  to explicitly penalize topological disconnects.
-                </p>
-                <p className="is-italic has-background-success-light p-4">
-                  Evaluation on the Fundus-AVSeg dataset reveals{" "}
-                  <span className="has-text-weight-bold has-text-success">
-                    state-of-the-art performance, achieving a combined Dice
-                    score of 90.97% and a 95% Hausdorff Distance of 3.50 pixels
-                  </span>
-                  . Notably, our method decreases vessel fragmentation by
-                  approximately{" "}
-                  <span className="has-text-weight-bold has-text-success">
-                    38% relative to baselines
-                  </span>
-                  , yielding topologically coherent vascular trees viable for
-                  automated biomarker quantification.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* The Problem Section */}
       <section className="section">
         <div className="container is-max-desktop">
@@ -904,9 +843,6 @@ paperid={15}
       </section>
 
       <div className="section-divider"></div>
-
-      {/* Interactive Visualization */}
-      <ComparisonExample />
 
       <div className="section-divider"></div>
 
