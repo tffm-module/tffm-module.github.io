@@ -8,3 +8,7 @@
 @theme {
   --font-lb: LibreBaskerville, "sans-serif";
 }
+
+html {
+  scroll-behavior: smooth;
+}

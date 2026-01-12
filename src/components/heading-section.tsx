@@ -8,7 +8,7 @@ type Author = {
   profile?: string;
 };
 
-export default function PaperHero() {
+export default function HeadingSection() {
   const title =
     "TFFM: Topology-Aware Feature Fusion Module via Latent Graph Reasoning for Retinal Vessel Segmentation";
 
@@ -116,31 +116,34 @@ export default function PaperHero() {
         <div className="flex flex-wrap justify-center gap-3">
           <a
             href="#pdf"
-            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaFilePdf /> Paper
           </a>
 
           <a
             href="#arxiv"
-            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <SiArxiv /> arXiv
           </a>
 
           <a
-            href="#bibtex"
-            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            href="#citation"
+            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaQuoteRight /> BibTeX
           </a>
 
           <a
             href="#code"
-            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaGithub /> Code
           </a>
+        </div>
+        <div className="mt-5">
+          <em className="text-rose-700">Soon will be updated!</em>
         </div>
       </div>
     </section>

@@ -10,15 +10,7 @@ export default function CitationSection({
 }: CitationSectionProps) {
   const [copied, setCopied] = useState(false);
 
-  const bibTeX = `@article{anonymous2024tffm,
-  title={TFFM: Topology-Aware Feature Fusion Module
-  via Latent Graph Reasoning for Retinal
-  Vessel Segmentation},
-  author={Anonymous},
-  journal={WACV 2026 - Algorithms Track},
-  year={2026},
-  paperid={15}
-}`;
+  const bibTeX = `Soon will be updated!`;
 
   const handleCopyBibTeX = async () => {
     try {
