@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import ComparisonExample from "./comparison-example";
+import PaperHero from "./paper-hero";
 
 const ResearchPageTFFM: React.FC = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
@@ -175,10 +176,6 @@ paperid={15}
 
   return (
     <>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-      />
       <link
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -589,126 +586,7 @@ paperid={15}
         `}
       </style>
 
-      {/* Navbar */}
-      <nav
-        className="navbar is-transparent"
-        role="navigation"
-        aria-label="main navigation"
-      >
-        <div className="container">
-          <div className="navbar-brand">
-            <a
-              role="button"
-              className={`navbar-burger ${navbarActive ? "is-active" : ""}`}
-              aria-label="menu"
-              aria-expanded={navbarActive}
-              onClick={() => setNavbarActive(!navbarActive)}
-            >
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-              <span aria-hidden="true"></span>
-            </a>
-          </div>
-          <div className={`navbar-menu ${navbarActive ? "is-active" : ""}`}>
-            <div
-              className="navbar-start"
-              style={{ flexGrow: 1, justifyContent: "center" }}
-            >
-              <a className="navbar-item" href="/">
-                <span className="icon">
-                  <i className="fas fa-home"></i>
-                </span>
-              </a>
-              <div className="navbar-item has-dropdown is-hoverable">
-                <a className="navbar-link">More Research</a>
-                <div className="navbar-dropdown">
-                  <a className="navbar-item" href="#">
-                    Related Projects
-                  </a>
-                  <a className="navbar-item" href="#">
-                    TFFM
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <section className="hero is-light">
-        <div className="hero-body">
-          <div className="container is-max-desktop">
-            <div className="columns is-centered">
-              <div className="column has-text-centered">
-                <h1 className="title is-1 publication-title">
-                  TFFM: Topology-Aware Feature Fusion Module via Latent Graph
-                  Reasoning for Retinal Vessel Segmentation
-                </h1>
-                <div className="is-size-5 publication-authors">
-                  <span className="author-block">
-                    <a href="#">Anonymous</a>
-                  </span>
-                </div>
-                <div className="is-size-5 publication-authors">
-                  <span className="author-block">
-                    WACV 2026 - Algorithms Track
-                  </span>
-                  <span className="author-block">Paper ID: 15</span>
-                </div>
-                <div className="column has-text-centered">
-                  <div className="publication-links">
-                    <span className="link-block">
-                      <a
-                        href="#pdf"
-                        className="external-link button is-normal is-rounded is-dark"
-                      >
-                        <span className="icon">
-                          <i className="fas fa-file-pdf"></i>
-                        </span>
-                        <span>Paper</span>
-                      </a>
-                    </span>
-                    <span className="link-block">
-                      <a
-                        href="#code"
-                        className="external-link button is-normal is-rounded is-dark"
-                      >
-                        <span className="icon">
-                          <i className="fab fa-github"></i>
-                        </span>
-                        <span>Code</span>
-                      </a>
-                    </span>
-                    <span className="link-block">
-                      <a
-                        href="#dataset"
-                        className="external-link button is-normal is-rounded is-dark"
-                      >
-                        <span className="icon">
-                          <i className="far fa-images"></i>
-                        </span>
-                        <span>Dataset</span>
-                      </a>
-                    </span>
-                    <span className="link-block">
-                      <button
-                        onClick={handleCopyBibTeX}
-                        className="button is-normal is-rounded is-dark"
-                      >
-                        <span className="icon">
-                          <i className="fas fa-quote-right"></i>
-                        </span>
-                        <span>Cite</span>
-                      </button>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <PaperHero />
 
       {/* Abstract Section */}
       <section className="section">

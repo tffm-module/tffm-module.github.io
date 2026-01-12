@@ -36,7 +36,7 @@ const overlaySection = {
 
 export default function ComparisonExample() {
   return (
-    <section className="py-16 bg-gray-50">
+    <section className="py-16 bg-neutral-100">
       <div className="mx-auto max-w-6xl px-4">
         <div className="mb-12 text-center text-3xl font-semibold tracking-tight">
           Visual Comparison: Baseline vs. TFFM
