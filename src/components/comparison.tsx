@@ -11,11 +11,7 @@ const ComparisonItem: React.FC<ComparisonItemProps> = ({
   children,
   className = "",
 }) => {
-  return (
-    <div className={`absolute inset-0 overflow-hidden ${className}`}>
-      {children}
-    </div>
-  );
+  return <div className={`absolute inset-0 ${className}`}>{children}</div>;
 };
 
 interface ComparisonHandleProps {
@@ -136,7 +132,7 @@ const Comparison: React.FC<ComparisonProps> = ({
       {rightItem}
 
       <div
-        className="absolute inset-0 overflow-hidden"
+        className="absolute inset-0"
         style={{ clipPath: `inset(0 ${100 - sliderPosition}% 0 0)` }}
       >
         {leftItem}
