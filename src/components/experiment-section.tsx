@@ -1474,9 +1474,6 @@ paperid={15}
           </div>
         </div>
       </section>
-
-      <CitationSection />
-      <Footer />
     </>
   );
 };
