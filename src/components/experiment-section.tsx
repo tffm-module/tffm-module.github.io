@@ -9,13 +9,13 @@ interface FinalResult {
   components: number;
 }
 
-interface ArchitectureData {
-  name: string;
-  dice: number;
-  iou: number;
-  hd95: number;
-  params: number;
-}
+// interface ArchitectureData {
+//   name: string;
+//   dice: number;
+//   iou: number;
+//   hd95: number;
+//   params: number;
+// }
 
 interface AblationData {
   name: string;
@@ -50,19 +50,19 @@ const FINAL_RESULTS: Record<VesselType, FinalResult> = {
   vein: { dice: 87.63, hd95: 14.59, clDice: 81.46, components: 26.1 },
 };
 
-const ARCHITECTURE_COMPARISON: ArchitectureData[] = [
-  { name: "U-Net", dice: 77.1, iou: 62.86, hd95: 12.45, params: 31.0 },
-  { name: "Attention U-Net", dice: 89.75, iou: 81.45, hd95: 4.6, params: 34.9 },
-  { name: "U-Net++", dice: 89.89, iou: 81.69, hd95: 4.27, params: 36.6 },
-  {
-    name: "U-Net++ w/ Attn (Baseline)",
-    dice: 91.0,
-    iou: 83.52,
-    hd95: 3.59,
-    params: 39.2,
-  },
-  { name: "TFFM (Final)", dice: 90.97, iou: 85.55, hd95: 3.5, params: 42.1 },
-];
+// const ARCHITECTURE_COMPARISON: ArchitectureData[] = [
+//   { name: "U-Net", dice: 77.1, iou: 62.86, hd95: 12.45, params: 31.0 },
+//   { name: "Attention U-Net", dice: 89.75, iou: 81.45, hd95: 4.6, params: 34.9 },
+//   { name: "U-Net++", dice: 89.89, iou: 81.69, hd95: 4.27, params: 36.6 },
+//   {
+//     name: "U-Net++ w/ Attn (Baseline)",
+//     dice: 91.0,
+//     iou: 83.52,
+//     hd95: 3.59,
+//     params: 39.2,
+//   },
+//   { name: "TFFM (Final)", dice: 90.97, iou: 85.55, hd95: 3.5, params: 42.1 },
+// ];
 
 const ABLATION_STUDY: AblationData[] = [
   {
@@ -223,289 +223,289 @@ const FinalResultsSection = () => {
 };
 
 // Component 2: Analytics Dashboard
-const AnalyticsDashboard = () => {
-  const [plotView, setPlotView] = useState<string>("comparison");
+// const AnalyticsDashboard = () => {
+//   const [plotView, setPlotView] = useState<string>("comparison");
 
-  useEffect(() => {
-    const createPlot = () => {
-      try {
-        if (plotView === "comparison") {
-          createArchitectureComparisonPlot();
-        } else if (plotView === "ablation") {
-          createAblationPlot();
-        } else if (plotView === "radar") {
-          createRadarPlot();
-        } else if (plotView === "parallel") {
-          createParallelCoordinatesPlot();
-        }
-      } catch (error) {
-        console.error("Error creating plot:", error);
-      }
-    };
+//   useEffect(() => {
+//     const createPlot = () => {
+//       try {
+//         if (plotView === "comparison") {
+//           createArchitectureComparisonPlot();
+//         } else if (plotView === "ablation") {
+//           createAblationPlot();
+//         } else if (plotView === "radar") {
+//           createRadarPlot();
+//         } else if (plotView === "parallel") {
+//           createParallelCoordinatesPlot();
+//         }
+//       } catch (error) {
+//         console.error("Error creating plot:", error);
+//       }
+//     };
 
-    createPlot();
-  }, [plotView]);
+//     createPlot();
+//   }, [plotView]);
 
-  const createArchitectureComparisonPlot = () => {
-    const trace1: Partial<Plotly.PlotData> = {
-      x: ARCHITECTURE_COMPARISON.map((d) => d.name),
-      y: ARCHITECTURE_COMPARISON.map((d) => d.dice),
-      type: "bar",
-      name: "Dice Score",
-      marker: { color: "#22d3ee" },
-    };
+//   const createArchitectureComparisonPlot = () => {
+//     const trace1: Partial<Plotly.PlotData> = {
+//       x: ARCHITECTURE_COMPARISON.map((d) => d.name),
+//       y: ARCHITECTURE_COMPARISON.map((d) => d.dice),
+//       type: "bar",
+//       name: "Dice Score",
+//       marker: { color: "#22d3ee" },
+//     };
 
-    const trace2: Partial<Plotly.PlotData> = {
-      x: ARCHITECTURE_COMPARISON.map((d) => d.name),
-      y: ARCHITECTURE_COMPARISON.map((d) => d.iou),
-      type: "bar",
-      name: "IoU",
-      marker: { color: "#a78bfa" },
-    };
+//     const trace2: Partial<Plotly.PlotData> = {
+//       x: ARCHITECTURE_COMPARISON.map((d) => d.name),
+//       y: ARCHITECTURE_COMPARISON.map((d) => d.iou),
+//       type: "bar",
+//       name: "IoU",
+//       marker: { color: "#a78bfa" },
+//     };
 
-    const trace3: Partial<Plotly.PlotData> = {
-      x: ARCHITECTURE_COMPARISON.map((d) => d.name),
-      y: ARCHITECTURE_COMPARISON.map((d) => d.hd95),
-      type: "scatter",
-      mode: "lines+markers",
-      name: "HD95",
-      yaxis: "y2",
-      marker: { color: "#f43f5e", size: 10 },
-      line: { width: 3 },
-    };
+//     const trace3: Partial<Plotly.PlotData> = {
+//       x: ARCHITECTURE_COMPARISON.map((d) => d.name),
+//       y: ARCHITECTURE_COMPARISON.map((d) => d.hd95),
+//       type: "scatter",
+//       mode: "lines+markers",
+//       name: "HD95",
+//       yaxis: "y2",
+//       marker: { color: "#f43f5e", size: 10 },
+//       line: { width: 3 },
+//     };
 
-    const layout: Partial<Plotly.Layout> = {
-      title: "Architecture Performance Comparison",
-      xaxis: { title: "Architecture", tickangle: -45 },
-      yaxis: { title: "Score (%)", side: "left" },
-      yaxis2: { title: "HD95 (pixels)", overlaying: "y", side: "right" },
-      barmode: "group",
-      hovermode: "closest",
-      plot_bgcolor: "#f8fafc",
-      paper_bgcolor: "#ffffff",
-      font: { family: "Inter, sans-serif" },
-      showlegend: true,
-      legend: { x: 0.01, y: 0.99 },
-    };
+//     const layout: Partial<Plotly.Layout> = {
+//       title: "Architecture Performance Comparison",
+//       xaxis: { title: "Architecture", tickangle: -45 },
+//       yaxis: { title: "Score (%)", side: "left" },
+//       yaxis2: { title: "HD95 (pixels)", overlaying: "y", side: "right" },
+//       barmode: "group",
+//       hovermode: "closest",
+//       plot_bgcolor: "#f8fafc",
+//       paper_bgcolor: "#ffffff",
+//       font: { family: "Inter, sans-serif" },
+//       showlegend: true,
+//       legend: { x: 0.01, y: 0.99 },
+//     };
 
-    const element = document.getElementById("architecture-plot");
-    if (element) {
-      Plotly.newPlot(element, [trace1, trace2, trace3], layout, {
-        responsive: true,
-      });
-    }
-  };
+//     const element = document.getElementById("architecture-plot");
+//     if (element) {
+//       Plotly.newPlot(element, [trace1, trace2, trace3], layout, {
+//         responsive: true,
+//       });
+//     }
+//   };
 
-  const createAblationPlot = () => {
-    const metrics: Array<keyof AblationData> = [
-      "dice",
-      "clDice",
-      "betti",
-      "juncF1",
-    ];
-    const metricLabels: Record<string, string> = {
-      dice: "Dice",
-      clDice: "clDice",
-      betti: "Betti",
-      juncF1: "Junction F1",
-    };
+//   const createAblationPlot = () => {
+//     const metrics: Array<keyof AblationData> = [
+//       "dice",
+//       "clDice",
+//       "betti",
+//       "juncF1",
+//     ];
+//     const metricLabels: Record<string, string> = {
+//       dice: "Dice",
+//       clDice: "clDice",
+//       betti: "Betti",
+//       juncF1: "Junction F1",
+//     };
 
-    const traces: Partial<Plotly.PlotData>[] = metrics.map((metric) => ({
-      x: ABLATION_STUDY.map((d) => d.name),
-      y: ABLATION_STUDY.map((d) => d[metric]),
-      type: "scatter",
-      mode: "lines+markers",
-      name: metricLabels[metric] || metric,
-      marker: { size: 10 },
-      line: { width: 3 },
-    }));
+//     const traces: Partial<Plotly.PlotData>[] = metrics.map((metric) => ({
+//       x: ABLATION_STUDY.map((d) => d.name),
+//       y: ABLATION_STUDY.map((d) => d[metric]),
+//       type: "scatter",
+//       mode: "lines+markers",
+//       name: metricLabels[metric] || metric,
+//       marker: { size: 10 },
+//       line: { width: 3 },
+//     }));
 
-    const layout: Partial<Plotly.Layout> = {
-      title: "Ablation Study: Progressive Improvement",
-      xaxis: { title: "Configuration", tickangle: -45 },
-      yaxis: { title: "Metric Value" },
-      hovermode: "closest",
-      plot_bgcolor: "#f8fafc",
-      paper_bgcolor: "#ffffff",
-      font: { family: "Inter, sans-serif" },
-      showlegend: true,
-      legend: { x: 0.01, y: 0.99 },
-    };
+//     const layout: Partial<Plotly.Layout> = {
+//       title: "Ablation Study: Progressive Improvement",
+//       xaxis: { title: "Configuration", tickangle: -45 },
+//       yaxis: { title: "Metric Value" },
+//       hovermode: "closest",
+//       plot_bgcolor: "#f8fafc",
+//       paper_bgcolor: "#ffffff",
+//       font: { family: "Inter, sans-serif" },
+//       showlegend: true,
+//       legend: { x: 0.01, y: 0.99 },
+//     };
 
-    const element = document.getElementById("ablation-plot");
-    if (element) {
-      Plotly.newPlot(element, traces, layout, { responsive: true });
-    }
-  };
+//     const element = document.getElementById("ablation-plot");
+//     if (element) {
+//       Plotly.newPlot(element, traces, layout, { responsive: true });
+//     }
+//   };
 
-  const createRadarPlot = () => {
-    const colors = ["#22d3ee", "#3b82f6", "#8b5cf6", "#ec4899"];
+//   const createRadarPlot = () => {
+//     const colors = ["#22d3ee", "#3b82f6", "#8b5cf6", "#ec4899"];
 
-    ABLATION_STUDY.forEach((model, idx) => {
-      const trace: Partial<Plotly.PlotData> = {
-        type: "scatterpolar",
-        r: [
-          model.dice,
-          model.clDice,
-          100 - model.betti,
-          model.juncF1,
-          100 - model.components,
-        ],
-        theta: [
-          "Dice",
-          "clDice",
-          "Topology<br>(100-Betti)",
-          "Junction F1",
-          "Connectivity<br>(100-Comp)",
-        ],
-        fill: "toself",
-        name: model.name,
-        marker: { color: colors[idx] },
-        fillcolor: colors[idx] + "40",
-      };
+//     ABLATION_STUDY.forEach((model, idx) => {
+//       const trace: Partial<Plotly.PlotData> = {
+//         type: "scatterpolar",
+//         r: [
+//           model.dice,
+//           model.clDice,
+//           100 - model.betti,
+//           model.juncF1,
+//           100 - model.components,
+//         ],
+//         theta: [
+//           "Dice",
+//           "clDice",
+//           "Topology<br>(100-Betti)",
+//           "Junction F1",
+//           "Connectivity<br>(100-Comp)",
+//         ],
+//         fill: "toself",
+//         name: model.name,
+//         marker: { color: colors[idx] },
+//         fillcolor: colors[idx] + "40",
+//       };
 
-      const layout: Partial<Plotly.Layout> = {
-        polar: {
-          radialaxis: { visible: true, range: [0, 100] },
-        },
-        title: model.name,
-        plot_bgcolor: "#f8fafc",
-        paper_bgcolor: "#ffffff",
-        font: { family: "Inter, sans-serif" },
-        margin: { l: 50, r: 50, t: 80, b: 50 },
-        showlegend: true,
-        legend: {
-          x: 0.5,
-          y: -0.15,
-          xanchor: "center",
-          yanchor: "top",
-          orientation: "h",
-        },
-      };
+//       const layout: Partial<Plotly.Layout> = {
+//         polar: {
+//           radialaxis: { visible: true, range: [0, 100] },
+//         },
+//         title: model.name,
+//         plot_bgcolor: "#f8fafc",
+//         paper_bgcolor: "#ffffff",
+//         font: { family: "Inter, sans-serif" },
+//         margin: { l: 50, r: 50, t: 80, b: 50 },
+//         showlegend: true,
+//         legend: {
+//           x: 0.5,
+//           y: -0.15,
+//           xanchor: "center",
+//           yanchor: "top",
+//           orientation: "h",
+//         },
+//       };
 
-      const element = document.getElementById(`radar-plot-${idx}`);
-      if (element) {
-        Plotly.newPlot(element, [trace], layout, { responsive: true });
-      }
-    });
-  };
+//       const element = document.getElementById(`radar-plot-${idx}`);
+//       if (element) {
+//         Plotly.newPlot(element, [trace], layout, { responsive: true });
+//       }
+//     });
+//   };
 
-  const createParallelCoordinatesPlot = () => {
-    const dimensions = [
-      {
-        label: "Dice",
-        values: ABLATION_STUDY.map((d) => d.dice),
-        range: [88, 92],
-      },
-      {
-        label: "clDice",
-        values: ABLATION_STUDY.map((d) => d.clDice),
-        range: [82, 88],
-      },
-      {
-        label: "Betti Error",
-        values: ABLATION_STUDY.map((d) => d.betti),
-        range: [20, 50],
-      },
-      {
-        label: "Junction F1",
-        values: ABLATION_STUDY.map((d) => d.juncF1),
-        range: [60, 70],
-      },
-      {
-        label: "Components",
-        values: ABLATION_STUDY.map((d) => d.components),
-        range: [20, 50],
-      },
-    ];
+//   const createParallelCoordinatesPlot = () => {
+//     const dimensions = [
+//       {
+//         label: "Dice",
+//         values: ABLATION_STUDY.map((d) => d.dice),
+//         range: [88, 92],
+//       },
+//       {
+//         label: "clDice",
+//         values: ABLATION_STUDY.map((d) => d.clDice),
+//         range: [82, 88],
+//       },
+//       {
+//         label: "Betti Error",
+//         values: ABLATION_STUDY.map((d) => d.betti),
+//         range: [20, 50],
+//       },
+//       {
+//         label: "Junction F1",
+//         values: ABLATION_STUDY.map((d) => d.juncF1),
+//         range: [60, 70],
+//       },
+//       {
+//         label: "Components",
+//         values: ABLATION_STUDY.map((d) => d.components),
+//         range: [20, 50],
+//       },
+//     ];
 
-    const trace: Partial<Plotly.PlotData> = {
-      type: "parcoords",
-      line: {
-        color: ABLATION_STUDY.map((_, idx) => idx),
-        colorscale: [
-          [0, "#f43f5e"],
-          [0.5, "#a78bfa"],
-          [1, "#22d3ee"],
-        ],
-      },
-      dimensions: dimensions,
-    };
+//     const trace: Partial<Plotly.PlotData> = {
+//       type: "parcoords",
+//       line: {
+//         color: ABLATION_STUDY.map((_, idx) => idx),
+//         colorscale: [
+//           [0, "#f43f5e"],
+//           [0.5, "#a78bfa"],
+//           [1, "#22d3ee"],
+//         ],
+//       },
+//       dimensions: dimensions,
+//     };
 
-    const layout: Partial<Plotly.Layout> = {
-      title: "Parallel Coordinates: Multi-Metric Analysis",
-      plot_bgcolor: "#f8fafc",
-      paper_bgcolor: "#ffffff",
-      font: { family: "Inter, sans-serif" },
-    };
+//     const layout: Partial<Plotly.Layout> = {
+//       title: "Parallel Coordinates: Multi-Metric Analysis",
+//       plot_bgcolor: "#f8fafc",
+//       paper_bgcolor: "#ffffff",
+//       font: { family: "Inter, sans-serif" },
+//     };
 
-    const element = document.getElementById("parallel-plot");
-    if (element) {
-      Plotly.newPlot(element, [trace], layout, { responsive: true });
-    }
-  };
+//     const element = document.getElementById("parallel-plot");
+//     if (element) {
+//       Plotly.newPlot(element, [trace], layout, { responsive: true });
+//     }
+//   };
 
-  const viewOptions = [
-    { id: "comparison", label: "Architecture Comparison" },
-    { id: "ablation", label: "Ablation Study" },
-    { id: "radar", label: "Radar Profile" },
-    { id: "parallel", label: "Parallel Coordinates" },
-  ];
+//   const viewOptions = [
+//     { id: "comparison", label: "Architecture Comparison" },
+//     { id: "ablation", label: "Ablation Study" },
+//     { id: "radar", label: "Radar Profile" },
+//     { id: "parallel", label: "Parallel Coordinates" },
+//   ];
 
-  return (
-    <section className="py-12 bg-neutral-100">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
-          Analytics Dashboard
-        </h2>
+//   return (
+//     <section className="py-12 bg-neutral-100">
+//       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+//         <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
+//           Analytics Dashboard
+//         </h2>
 
-        <div className="mb-8">
-          <div className="flex flex-wrap gap-2 justify-center">
-            {viewOptions.map((view) => (
-              <button
-                key={view.id}
-                onClick={() => setPlotView(view.id)}
-                className={`px-4 py-2 rounded font-medium text-sm transition ${
-                  plotView === view.id
-                    ? "bg-neutral-800 text-white"
-                    : "bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-100"
-                }`}
-              >
-                {view.label}
-              </button>
-            ))}
-          </div>
-        </div>
+//         <div className="mb-8">
+//           <div className="flex flex-wrap gap-2 justify-center">
+//             {viewOptions.map((view) => (
+//               <button
+//                 key={view.id}
+//                 onClick={() => setPlotView(view.id)}
+//                 className={`px-4 py-2 rounded font-medium text-sm transition ${
+//                   plotView === view.id
+//                     ? "bg-neutral-800 text-white"
+//                     : "bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-100"
+//                 }`}
+//               >
+//                 {view.label}
+//               </button>
+//             ))}
+//           </div>
+//         </div>
 
-        {plotView === "radar" ? (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-            {ABLATION_STUDY.map((_, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded border border-neutral-300 p-6 shadow-sm"
-              >
-                <div id={`radar-plot-${idx}`} className="w-full h-80"></div>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="bg-white rounded border border-neutral-300 p-6 shadow-sm mb-8">
-            <div
-              id={
-                plotView === "comparison"
-                  ? "architecture-plot"
-                  : plotView === "ablation"
-                  ? "ablation-plot"
-                  : "parallel-plot"
-              }
-              className="w-full h-96"
-            ></div>
-          </div>
-        )}
-      </div>
-    </section>
-  );
-};
+//         {plotView === "radar" ? (
+//           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+//             {ABLATION_STUDY.map((_, idx) => (
+//               <div
+//                 key={idx}
+//                 className="bg-white rounded border border-neutral-300 p-6 shadow-sm"
+//               >
+//                 <div id={`radar-plot-${idx}`} className="w-full h-80"></div>
+//               </div>
+//             ))}
+//           </div>
+//         ) : (
+//           <div className="bg-white rounded border border-neutral-300 p-6 shadow-sm mb-8">
+//             <div
+//               id={
+//                 plotView === "comparison"
+//                   ? "architecture-plot"
+//                   : plotView === "ablation"
+//                   ? "ablation-plot"
+//                   : "parallel-plot"
+//               }
+//               className="w-full h-96"
+//             ></div>
+//           </div>
+//         )}
+//       </div>
+//     </section>
+//   );
+// };
 
 // Component 3: Cross-Dataset Generalization Section
 const CrossDatasetSection = () => {
@@ -514,14 +514,6 @@ const CrossDatasetSection = () => {
     key: null,
     direction: "asc",
   });
-
-  useEffect(() => {
-    try {
-      createCrossDatasetPlot();
-    } catch (error) {
-      console.error("Error creating cross-dataset plot:", error);
-    }
-  }, []);
 
   const createCrossDatasetPlot = () => {
     const trace1: Partial<Plotly.PlotData> = {
@@ -548,7 +540,6 @@ const CrossDatasetSection = () => {
       polar: {
         radialaxis: { visible: true, range: [0, 100] },
       },
-      title: "Cross-Dataset Generalization",
       showlegend: true,
       plot_bgcolor: "#f8fafc",
       paper_bgcolor: "#ffffff",
@@ -562,6 +553,14 @@ const CrossDatasetSection = () => {
       Plotly.newPlot(element, [trace1, trace2], layout, { responsive: true });
     }
   };
+
+  useEffect(() => {
+    try {
+      createCrossDatasetPlot();
+    } catch (error) {
+      console.error("Error creating cross-dataset plot:", error);
+    }
+  }, []);
 
   const handleSort = (key: string) => {
     let direction: SortDirection = "asc";
