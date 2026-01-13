@@ -1,92 +1,48 @@
-import React, { useState, useEffect } from "react";
-import Footer from "./footer";
-import CitationSection from "./citation-seciton";
-import AbstractSection from "./abstract-section";
-import ModelArchitectureSection from "./model-architecture-section";
+import { useState, useEffect, useMemo } from "react";
+// plotly has no bundled TS types in this project; ignore the import type-check
+// @ts-ignore
+import * as Plotly from "plotly.js-dist-min";
 
-const ResearchPageTFFM: React.FC = () => {
+const ResearchPageTFFM = () => {
   const [activeTab, setActiveTab] = useState<"combined" | "artery" | "vein">(
     "combined"
   );
   const [showAblation, setShowAblation] = useState(false);
-  const [navbarActive, setNavbarActive] = useState(false);
-  const [activeMetric, setActiveMetric] = useState<
-    "dice" | "clDice" | "hd95" | "components"
-  >("dice");
+  const [selectedModel, setSelectedModel] = useState<string | null>(null);
+  const [selectedDataset, setSelectedDataset] = useState<string | null>(null);
+  const [plotView, setPlotView] = useState("comparison");
+  const [sortConfig, setSortConfig] = useState<{
+    key: string | null;
+    direction: "asc" | "desc";
+  }>({ key: null, direction: "asc" });
 
-  useEffect(() => {
-    // Close mobile menu when window is resized to desktop
-    const handleResize = () => {
-      if (window.innerWidth > 1024) {
-        setNavbarActive(false);
-      }
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
-
-  const handleCopyBibTeX = () => {
-    const bibTeX = `@article{anonymous2024tffm,
-title={TFFM: Topology-Aware Feature Fusion Module via Latent Graph Reasoning for Retinal Vessel Segmentation},
-author={Anonymous},
-journal={WACV 2026 - Algorithms Track},
-year={2026},
-paperid={15}
-}`;
-    navigator.clipboard.writeText(bibTeX).then(() => {
-      alert("BibTeX copied to clipboard!");
-    });
-  };
-
-  // Final Results Data
+  // Data
   const finalResults = {
     combined: { dice: 90.97, hd95: 3.5, clDice: 85.55, components: 25.3 },
     artery: { dice: 85.75, hd95: 21.22, clDice: 79.07, components: 23.3 },
     vein: { dice: 87.63, hd95: 14.59, clDice: 81.46, components: 26.1 },
   };
 
-  // Architecture Comparison
   const architectureComparison = [
-    { name: "U-Net", dice: 77.1, iou: 62.86, hd95: 12.45 },
-    { name: "Attention U-Net", dice: 89.75, iou: 81.45, hd95: 4.6 },
-    { name: "U-Net++", dice: 89.89, iou: 81.69, hd95: 4.27 },
-    { name: "U-Net++ w/ Attn (Baseline)", dice: 91.0, iou: 83.52, hd95: 3.59 },
-    { name: "TFFM (Final)", dice: 90.97, iou: 85.55, hd95: 3.5 },
+    { name: "U-Net", dice: 77.1, iou: 62.86, hd95: 12.45, params: 31.0 },
+    {
+      name: "Attention U-Net",
+      dice: 89.75,
+      iou: 81.45,
+      hd95: 4.6,
+      params: 34.9,
+    },
+    { name: "U-Net++", dice: 89.89, iou: 81.69, hd95: 4.27, params: 36.6 },
+    {
+      name: "U-Net++ w/ Attn (Baseline)",
+      dice: 91.0,
+      iou: 83.52,
+      hd95: 3.59,
+      params: 39.2,
+    },
+    { name: "TFFM (Final)", dice: 90.97, iou: 85.55, hd95: 3.5, params: 42.1 },
   ];
 
-  // Loss Function Comparison
-  const lossComparison = [
-    { name: "BCEDice", dice: 89.2, topology: 28.5, fragmentation: 45.2 },
-    { name: "BoundaryDoU", dice: 87.5, topology: 25.5, fragmentation: 27.2 },
-    { name: "LogCoshDice", dice: 92.04, topology: 30.7, fragmentation: 32.1 },
-    {
-      name: "Tversky (α=0.65)",
-      dice: 90.95,
-      topology: 27.3,
-      fragmentation: 28.4,
-    },
-  ];
-
-  // Encoder Comparison
-  const encoderComparison = [
-    { name: "ResNet-50", arteryDice: 80.56, veinDice: 83.44, betti: 51.6 },
-    { name: "ResNet-101", arteryDice: 80.98, veinDice: 84.05, betti: 44.4 },
-    { name: "ConvNeXt-B", arteryDice: 80.96, veinDice: 83.98, betti: 48.1 },
-    {
-      name: "EfficientNet-B4",
-      arteryDice: 79.11,
-      veinDice: 82.14,
-      betti: 38.4,
-    },
-    {
-      name: "EfficientNet-B0 (Selected)",
-      arteryDice: 81.8,
-      veinDice: 84.32,
-      betti: 38.6,
-    },
-  ];
-
-  // Ablation Study
   const ablationStudy = [
     {
       name: "Baseline",
@@ -94,14 +50,23 @@ paperid={15}
       clDice: 84.54,
       betti: 43.0,
       juncF1: 63.64,
+      components: 45.2,
     },
-    { name: "+ TFFM", dice: 90.47, clDice: 85.05, betti: 26.0, juncF1: 65.44 },
+    {
+      name: "+ TFFM",
+      dice: 90.47,
+      clDice: 85.05,
+      betti: 26.0,
+      juncF1: 65.44,
+      components: 32.1,
+    },
     {
       name: "+ clDice Loss",
       dice: 90.95,
       clDice: 85.3,
       betti: 24.5,
       juncF1: 66.2,
+      components: 28.4,
     },
     {
       name: "Full (+ Augmentation)",
@@ -109,13 +74,13 @@ paperid={15}
       clDice: 85.55,
       betti: 25.3,
       juncF1: 66.5,
+      components: 25.3,
     },
   ];
 
-  // Cross-Dataset Evaluation
   const crossDataset = [
     {
-      name: "Fundus-AVSeg (Source)",
+      name: "Fundus-AVSeg",
       dice: 90.97,
       hd95: 3.5,
       clDice: 85.55,
@@ -164,1317 +129,614 @@ paperid={15}
     },
   ];
 
-  // Data Augmentation Details
-  const augmentationStrategies = [
-    { name: "Random Rotation", range: "[-30°, +30°]", probability: 0.5 },
-    { name: "Vertical Flip", range: "-", probability: 0.5 },
-    { name: "Horizontal Flip", range: "-", probability: 0.5 },
-    { name: "Affine Translation", range: "5%", probability: 0.3 },
-    { name: "Random Contrast", range: "[0.8, 1.2]", probability: 0.3 },
-    { name: "Intensity Shift", range: "0.1", probability: 0.3 },
-    { name: "Gaussian Noise", range: "σ=0.01", probability: 0.2 },
-    { name: "Gaussian Smoothing", range: "σ∈[0.5, 1.0]", probability: 0.2 },
-  ];
+  // Plotting functions
+  useEffect(() => {
+    if (plotView === "comparison") {
+      createArchitectureComparisonPlot();
+    } else if (plotView === "ablation") {
+      createAblationPlot();
+    } else if (plotView === "cross-dataset") {
+      createCrossDatasetPlot();
+    } else if (plotView === "radar") {
+      createRadarPlot();
+    } else if (plotView === "parallel") {
+      createParallelCoordinatesPlot();
+    }
+  }, [plotView, selectedModel]);
+
+  const createArchitectureComparisonPlot = () => {
+    const trace1 = {
+      x: architectureComparison.map((d) => d.name),
+      y: architectureComparison.map((d) => d.dice),
+      type: "bar",
+      name: "Dice Score",
+      marker: { color: "#22d3ee" },
+      visible: true,
+    };
+
+    const trace2 = {
+      x: architectureComparison.map((d) => d.name),
+      y: architectureComparison.map((d) => d.iou),
+      type: "bar",
+      name: "IoU",
+      marker: { color: "#a78bfa" },
+      visible: true,
+    };
+
+    const trace3 = {
+      x: architectureComparison.map((d) => d.name),
+      y: architectureComparison.map((d) => d.hd95),
+      type: "scatter",
+      mode: "lines+markers",
+      name: "HD95",
+      yaxis: "y2",
+      marker: { color: "#f43f5e", size: 10 },
+      line: { width: 3 },
+      visible: true,
+    };
+
+    const layout = {
+      title: "Architecture Performance Comparison",
+      xaxis: { title: "Architecture", tickangle: -45 },
+      yaxis: { title: "Score (%)", side: "left" },
+      yaxis2: { title: "HD95 (pixels)", overlaying: "y", side: "right" },
+      barmode: "group",
+      hovermode: "closest",
+      plot_bgcolor: "#f8fafc",
+      paper_bgcolor: "#ffffff",
+      font: { family: "Inter, sans-serif" },
+      showlegend: true,
+      legend: { x: 0.01, y: 0.99 },
+    };
+
+    Plotly.newPlot("architecture-plot", [trace1, trace2, trace3], layout, {
+      responsive: true,
+    });
+  };
+
+  const createAblationPlot = () => {
+    const metrics = ["dice", "clDice", "betti", "juncF1"];
+    const traces = metrics.map((metric) => ({
+      x: ablationStudy.map((d) => d.name),
+      y: ablationStudy.map((d) => (d as any)[metric]),
+      type: "scatter",
+      mode: "lines+markers",
+      name:
+        metric === "juncF1"
+          ? "Junction F1"
+          : metric === "clDice"
+          ? "clDice"
+          : metric.charAt(0).toUpperCase() + metric.slice(1),
+      marker: { size: 10 },
+      line: { width: 3 },
+      visible: true,
+    }));
+
+    const layout = {
+      title: "Ablation Study: Progressive Improvement",
+      xaxis: { title: "Configuration", tickangle: -45 },
+      yaxis: { title: "Metric Value" },
+      hovermode: "closest",
+      plot_bgcolor: "#f8fafc",
+      paper_bgcolor: "#ffffff",
+      font: { family: "Inter, sans-serif" },
+      showlegend: true,
+      legend: { x: 0.01, y: 0.99 },
+    };
+
+    Plotly.newPlot("ablation-plot", traces, layout, { responsive: true });
+  };
+
+  const createCrossDatasetPlot = () => {
+    const trace1 = {
+      type: "scatterpolar",
+      r: crossDataset.map((d) => d.dice),
+      theta: crossDataset.map((d) => d.name),
+      fill: "toself",
+      name: "Dice",
+      marker: { color: "#22d3ee" },
+      fillcolor: "#22d3ee40",
+    };
+
+    const trace2 = {
+      type: "scatterpolar",
+      r: crossDataset.map((d) => d.clDice),
+      theta: crossDataset.map((d) => d.name),
+      fill: "toself",
+      name: "clDice",
+      marker: { color: "#8b5cf6" },
+      fillcolor: "#8b5cf640",
+    };
+
+    const layout = {
+      polar: {
+        radialaxis: { visible: true, range: [0, 100] },
+      },
+      title: "Cross-Dataset Generalization",
+      showlegend: true,
+      plot_bgcolor: "#f8fafc",
+      paper_bgcolor: "#ffffff",
+      font: { family: "Inter, sans-serif" },
+      margin: { l: 80, r: 80, t: 80, b: 80 },
+      legend: { x: 1.1, y: 1 },
+    };
+
+    Plotly.newPlot("cross-dataset-plot", [trace1, trace2], layout, {
+      responsive: true,
+    });
+  };
+
+  const createRadarPlot = () => {
+    // Color palette for each model
+    const colors = ["#22d3ee", "#3b82f6", "#8b5cf6", "#ec4899"];
+
+    // Create radar plots for all ablation models in a 2x2 grid
+    ablationStudy.forEach((model, idx) => {
+      const trace = {
+        type: "scatterpolar",
+        r: [
+          model.dice,
+          model.clDice,
+          100 - model.betti,
+          model.juncF1,
+          100 - model.components,
+        ],
+        theta: [
+          "Dice",
+          "clDice",
+          "Topology<br>(100-Betti)",
+          "Junction F1",
+          "Connectivity<br>(100-Comp)",
+        ],
+        fill: "toself",
+        name: model.name,
+        marker: { color: colors[idx] },
+        fillcolor:
+          colors[idx].replace(/(\w{2})(\w{2})(\w{2})/, "$1$2$3") + "40",
+      };
+
+      const layout = {
+        polar: {
+          radialaxis: { visible: true, range: [0, 100] },
+        },
+        title: `${model.name}`,
+        plot_bgcolor: "#f8fafc",
+        paper_bgcolor: "#ffffff",
+        font: { family: "Inter, sans-serif" },
+        margin: { l: 50, r: 50, t: 80, b: 50 },
+        showlegend: true,
+        legend: {
+          x: 0.5,
+          y: -0.15,
+          xanchor: "center",
+          yanchor: "top",
+          orientation: "h",
+        },
+      };
+
+      const container = document.getElementById(`radar-plot-${idx}`);
+      if (container) {
+        Plotly.newPlot(`radar-plot-${idx}`, [trace], layout, {
+          responsive: true,
+        });
+      }
+    });
+  };
+
+  const createParallelCoordinatesPlot = () => {
+    const dimensions = [
+      {
+        label: "Dice",
+        values: ablationStudy.map((d) => d.dice),
+        range: [88, 92],
+      },
+      {
+        label: "clDice",
+        values: ablationStudy.map((d) => d.clDice),
+        range: [82, 88],
+      },
+      {
+        label: "Betti Error",
+        values: ablationStudy.map((d) => d.betti),
+        range: [20, 50],
+      },
+      {
+        label: "Junction F1",
+        values: ablationStudy.map((d) => d.juncF1),
+        range: [60, 70],
+      },
+      {
+        label: "Components",
+        values: ablationStudy.map((d) => d.components),
+        range: [20, 50],
+      },
+    ];
+
+    const trace = {
+      type: "parcoords",
+      line: {
+        color: ablationStudy.map((_, idx) => idx),
+        colorscale: [
+          [0, "#f43f5e"],
+          [0.5, "#a78bfa"],
+          [1, "#22d3ee"],
+        ],
+      },
+      dimensions: dimensions,
+    };
+
+    const layout = {
+      title: "Parallel Coordinates: Multi-Metric Analysis",
+      plot_bgcolor: "#f8fafc",
+      paper_bgcolor: "#ffffff",
+      font: { family: "Inter, sans-serif" },
+    };
+
+    Plotly.newPlot("parallel-plot", [trace], layout, { responsive: true });
+  };
+
+  // Table sorting
+  const handleSort = (key: string) => {
+    let direction: "asc" | "desc" = "asc";
+    if (sortConfig.key === key && sortConfig.direction === "asc") {
+      direction = "desc";
+    }
+    setSortConfig({ key, direction });
+  };
+
+  const sortedCrossDataset = useMemo(() => {
+    let sortableItems = [...crossDataset];
+    if (sortConfig.key) {
+      const key = sortConfig.key as keyof (typeof crossDataset)[0];
+      sortableItems.sort((a, b) => {
+        if ((a as any)[key] < (b as any)[key]) {
+          return sortConfig.direction === "asc" ? -1 : 1;
+        }
+        if ((a as any)[key] > (b as any)[key]) {
+          return sortConfig.direction === "asc" ? 1 : -1;
+        }
+        return 0;
+      });
+    }
+    return sortableItems;
+  }, [crossDataset, sortConfig]);
 
   return (
-    <>
-      {/* <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
-      /> */}
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      />
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css"
-      />
+    <div className="min-h-screen bg-emerald-50-100">
+      {/* Final Results - Tab Interface */}
+      <section className="py-16 bg-neutral-50">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
+            Final Model Performance
+          </h2>
 
-      <style>
-        {`
-        body {
-          line-height: 1.6;
-          color: #363636;
-        }
-        .hero-body {
-          padding-top: 3rem;
-          padding-bottom: 3rem;
-        }
-        .publication-title {
-          line-height: 1.2;
-        }
-        .publication-authors {
-        }
-        .section {
-          padding: 4rem 1.5rem;
-        }
-        .section-header {
-          margin-bottom: 3rem;
-          position: relative;
-        }
-        .section-header::after {
-          content: '';
-          display: block;
-          width: 80px;
-          height: 3px;
-          background: #363636;
-          margin: 1rem auto 0;
-        }
-        .publication-video {
-          position: relative;
-          width: 100%;
-          height: 0;
-          padding-bottom: 56.25%;
-          overflow: hidden;
-          border-radius: 10px !important;
-        }
-        .publication-video iframe {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-        }
-        .comparison-container {
-          border: 1px solid #dbdbdb;
-          border-radius: 10px;
-          overflow: hidden;
-          margin-bottom: 2rem;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-          background: #000;
-        }
-        .metric-card {
-          border: 1px solid #dbdbdb;
-          border-radius: 10px;
-          padding: 1.5rem;
-          text-align: center;
-          background: #f5f5f5;
-          transition: all 0.3s ease;
-          cursor: pointer;
-          height: 180px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-        }
-        .metric-card:hover {
-          transform: translateY(-3px);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .metric-card.active {
-          border-color: #363636;
-          background: #e9e9e9;
-          position: relative;
-        }
-        .metric-card.active::after {
-          content: '';
-          position: absolute;
-          bottom: -2px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 40px;
-          height: 3px;
-          background: #363636;
-        }
-        .navbar-burger {
-          height: auto;
-        }
-        .icon-link {
-          font-size: 25px;
-          color: #000;
-        }
-        .table-container {
-          overflow-x: auto;
-          border-radius: 10px;
-          margin-bottom: 2rem;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        .elegant-table {
-          width: 100%;
-          border-collapse: collapse;
-          border-radius: 10px;
-          overflow: hidden;
-          font-size: 0.95rem;
-        }
-        .elegant-table th {
-          background-color: #363636;
-          color: white;
-          font-weight: 600;
-          padding: 1rem;
-          text-align: left;
-        }
-        .elegant-table td {
-          padding: 0.8rem 1rem;
-          border-bottom: 1px solid #eee;
-        }
-        .elegant-table tr:last-child td {
-          border-bottom: none;
-        }
-        .elegant-table tr:hover td {
-          background-color: #f9f9f9;
-        }
-        .highlight-row {
-          background-color: #f5fffa !important;
-        }
-        .highlight-row td {
-          font-weight: 600;
-        }
-        .comparison-handle {
-          width: 4px;
-          background-color: #363636;
-          height: 100%;
-          cursor: ew-resize;
-          position: absolute;
-          top: 0;
-          box-shadow: 0 0 10px rgba(0,0,0,0.2);
-        }
-        .diagram-container {
-          display: flex;
-          gap: 1.5rem;
-          margin-bottom: 2rem;
-        }
-        .diagram-box {
-          flex: 1;
-          border: 1px solid #dbdbdb;
-          border-radius: 10px;
-          padding: 1.5rem;
-          background: white;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        }
-        .diagram-image {
-          width: 100%;
-          height: 320px;
-          object-fit: contain;
-          margin-top: 1rem;
-          border-radius: 8px;
-          background: #f8f8f8;
-          padding: 1rem;
-        }
-        .image-container {
-          border: 1px solid #eee;
-          border-radius: 8px;
-          overflow: hidden;
-          margin: 1.5rem 0;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-          background: #f9f9f9;
-        }
-        .content-image {
-          width: 100%;
-          height: auto;
-          display: block;
-          object-fit: contain;
-          max-width: 100%;
-          margin: 0 auto;
-        }
-        .tabs ul {
-          border-bottom: 2px solid #dbdbdb;
-        }
-        .tabs li a {
-          border-bottom: 3px solid transparent;
-          padding: 0.5em 1.5em;
-          font-weight: 500;
-          color: #7a7a7a;
-        }
-        .tabs li.is-active a, .tabs li:hover a {
-          border-bottom-color: #363636;
-          color: #363636;
-          font-weight: 600;
-        }
-        .box {
-          border-radius: 10px;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-          margin-bottom: 2rem;
-          border: 1px solid #eee;
-        }
-        .key-innovation {
-          border-left: 3px solid #363636;
-          padding-left: 1rem;
-          margin-bottom: 1.5rem;
-          transition: all 0.3s ease;
-        }
-        .key-innovation:hover {
-          background: #f9f9f9;
-          border-left-color: #ff3860;
-        }
-        .has-visual-padding {
-          padding: 1.5rem;
-          background: #fafafa;
-          border-radius: 10px;
-          border: 1px solid #eee;
-        }
-        .section-divider {
-          height: 1px;
-          background: linear-gradient(to right, transparent, #dbdbdb, transparent);
-          margin: 3rem 0;
-        }
-        .image-comparison {
-          position: relative;
-          width: 100%;
-          height: 400px;
-          margin: 1.5rem 0;
-        }
-        .image-comparison img {
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          display: block;
-        }
-        .image-label {
-          position: absolute;
-          bottom: 10px;
-          background: rgba(0,0,0,0.7);
-          color: white;
-          padding: 4px 10px;
-          border-radius: 4px;
-          font-size: 0.85rem;
-          font-weight: 500;
-        }
-        .image-label.left {
-          left: 15px;
-        }
-        .image-label.right {
-          right: 15px;
-        }
-        .metric-table {
-          width: 100%;
-          border-collapse: collapse;
-          margin: 1.5rem 0;
-        }
-        .metric-table th, .metric-table td {
-          padding: 0.75rem;
-          text-align: center;
-          border: 1px solid #eee;
-        }
-        .metric-table th {
-          background-color: #363636;
-          color: white;
-          font-weight: 600;
-        }
-        .metric-table tr.highlight {
-          background-color: #f5fffa;
-          font-weight: 600;
-        }
-        .metric-table tr.best td {
-          position: relative;
-        }
-        .metric-table tr.best td::after {
-          content: '★';
-          position: absolute;
-          top: 2px;
-          right: 5px;
-          color: gold;
-          font-size: 0.8rem;
-        }
-        .table-caption {
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-          color: #363636;
-          font-size: 1.1rem;
-          display: block;
-          width: 100%;
-        }
-        .table-footer {
-          font-size: 0.9rem;
-          color: #666;
-          margin-top: 0.5rem;
-          font-style: italic;
-        }
-        .table-col-30 { width: 30%; }
-        .table-col-25 { width: 25%; }
-        .table-col-20 { width: 20%; }
-        .table-col-15 { width: 15%; }
-        .table-col-40 { width: 40%; }
-        .text-center { text-align: center; }
-        @media (max-width: 768px) {
-          .diagram-container {
-            flex-direction: column;
-          }
-          .image-comparison {
-            height: 300px;
-          }
-          .columns.is-mobile .column {
-            display: block;
-            text-align: center !important;
-          }
-          .tabs ul {
-            flex-wrap: wrap;
-          }
-          .metric-card {
-            height: auto;
-            margin-bottom: 1rem;
-          }
-          .table-responsive {
-            overflow-x: auto;
-            display: block;
-          }
-        }
-        .highlight-box {
-          background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
-          border-left: 4px solid #007bff;
-          padding: 1.5rem;
-          border-radius: 0 8px 8px 0;
-          margin: 1.5rem 0;
-        }
-        .highlight-box.success {
-          border-left-color: #28a745;
-        }
-        .highlight-box.warning {
-          border-left-color: #ffc107;
-        }
-        .highlight-box.info {
-          border-left-color: #17a2b8;
-        }
-        .caption {
-          font-size: 0.9rem;
-          color: #666;
-          margin-top: 0.5rem;
-          font-style: italic;
-          text-align: center;
-        }
-        .table-header {
-          background: #f5f5f5;
-          padding: 1.5rem;
-          border-radius: 10px 10px 0 0;
-          border-bottom: 1px solid #dbdbdb;
-          margin-bottom: 0;
-        }
-        .table-description {
-          font-size: 0.95rem;
-          color: #666;
-          margin-bottom: 1rem;
-        }
-        .metric-container {
-          display: grid;
-          grid-template-columns: repeat(4, 1fr);
-          gap: 1.5rem;
-          margin: 2rem 0;
-        }
-        .metric-box {
-          border: 1px solid #dbdbdb;
-          border-radius: 10px;
-          padding: 1.5rem;
-          text-align: center;
-          background: #f9f9f9;
-          transition: all 0.3s ease;
-          min-height: 180px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-        }
-        .metric-box:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .metric-box h4 {
-          font-weight: 600;
-          margin-bottom: 0.5rem;
-          font-size: 1.1rem;
-          color: #363636;
-        }
-        .metric-box .value {
-          font-size: 2rem;
-          font-weight: 700;
-          color: #363636;
-          margin: 0.25rem 0;
-        }
-        .metric-box .description {
-          font-size: 0.85rem;
-          color: #666;
-        }
-        .metric-box.highlight {
-          background: #f5fffa;
-          border-color: #28a745;
-        }
-        .tab-container .tabs {
-          margin-bottom: 2rem;
-        }
-        `}
-      </style>
+          <div className="bg-white rounded border border-neutral-300 shadow-sm p-6">
+            <div className="flex justify-center mb-8 gap-2 flex-wrap">
+              {(["combined", "artery", "vein"] as const).map((tab) => (
+                <button
+                  key={tab}
+                  onClick={() => setActiveTab(tab)}
+                  className={`px-4 py-2 rounded font-medium text-sm transition ${
+                    activeTab === tab
+                      ? "bg-neutral-800 text-white"
+                      : "bg-neutral-100 text-neutral-700 border border-neutral-300 hover:bg-neutral-50"
+                  }`}
+                >
+                  {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                </button>
+              ))}
+            </div>
 
-      {/* The Problem Section */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                The Topology Crisis in Vessel Segmentation
-              </h2>
-              <div className="columns">
-                <div className="column">
-                  <h3 className="title is-4">The Semantic Gap</h3>
-                  <div className="block">
-                    <div className="message is-dark">
-                      <div className="message-body">
-                        <p className="has-text-weight-bold">To a Clinician:</p>A
-                        blood vessel is a{" "}
-                        <span className="has-text-weight-medium is-italic">
-                          continuous transport network
-                        </span>
-                      </div>
-                    </div>
-                    <div className="message is-primary mt-4">
-                      <div className="message-body">
-                        <p className="has-text-weight-bold">To a CNN:</p>
-                        It is merely a{" "}
-                        <span className="has-text-weight-medium is-italic">
-                          collection of disjoint pixels
-                        </span>
-                      </div>
-                    </div>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              {[
+                {
+                  key: "dice",
+                  label: "Dice Score",
+                  desc: "Pixel overlap accuracy",
+                },
+                {
+                  key: "clDice",
+                  label: "clDice",
+                  desc: "Skeleton similarity",
+                },
+                {
+                  key: "hd95",
+                  label: "HD95",
+                  desc: "95th percentile distance",
+                },
+                {
+                  key: "components",
+                  label: "Components",
+                  desc: "Disconnected segments",
+                },
+              ].map((metric) => (
+                <div
+                  key={metric.key}
+                  className="bg-neutral-50 rounded border border-neutral-300 p-4 text-center"
+                >
+                  <div className="text-3xl font-bold text-neutral-800 mb-1">
+                    {(finalResults as any)[activeTab][metric.key]}
+                    {metric.key === "hd95"
+                      ? "px"
+                      : metric.key === "components"
+                      ? ""
+                      : "%"}
                   </div>
-
-                  <h4 className="title is-5 has-text-danger mt-5">
-                    The "Shattered Vessel" Phenomenon
-                  </h4>
-                  <ul>
-                    <li className="mb-2">
-                      <span className="icon has-text-danger mr-2">
-                        <i className="fas fa-times"></i>
-                      </span>
-                      High Dice scores (95%+) with severely fragmented
-                      predictions
-                    </li>
-                    <li className="mb-2">
-                      <span className="icon has-text-danger mr-2">
-                        <i className="fas fa-times"></i>
-                      </span>
-                      Topologically invalid segmentations render graph analysis
-                      impossible
-                    </li>
-                    <li className="mb-2">
-                      <span className="icon has-text-danger mr-2">
-                        <i className="fas fa-times"></i>
-                      </span>
-                      Pixel metrics (Dice, IoU) cannot penalize disconnections
-                    </li>
-                  </ul>
-                </div>
-                <div className="column">
-                  <h3 className="title is-4">
-                    Clinical Requirements for Topology
-                  </h3>
-                  <div className="message is-info mb-5">
-                    <div className="message-header">
-                      <p>Why This Matters</p>
-                    </div>
-                    <div className="message-body">
-                      Retinal arteries/veins serve as biomarkers for
-                      cardiovascular disease, hypertension, and diabetic
-                      retinopathy. For automated biomarker extraction and
-                      clinical deployment, segmentations must preserve the
-                      vascular tree structure.
-                    </div>
+                  <div className="text-sm font-medium text-neutral-700 mb-1">
+                    {metric.label}
                   </div>
-                  <ul>
-                    <li className="mb-2">
-                      <span className="icon has-text-success mr-2">
-                        <i className="fas fa-check"></i>
-                      </span>
-                      Continuous vessel networks enable reliable graph-based
-                      analysis
-                    </li>
-                    <li className="mb-2">
-                      <span className="icon has-text-success mr-2">
-                        <i className="fas fa-check"></i>
-                      </span>
-                      Bifurcation preservation critical for tortuosity
-                      quantification
-                    </li>
-                    <li className="mb-2">
-                      <span className="icon has-text-success mr-2">
-                        <i className="fas fa-check"></i>
-                      </span>
-                      Enables downstream artery-vein classification
-                    </li>
-                  </ul>
+                  <div className="text-xs text-neutral-600">{metric.desc}</div>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      <div className="section-divider"></div>
+      {/* Interactive Dashboard */}
+      <section className="py-16 bg-neutral-100">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
+            Analytics Dashboard
+          </h2>
 
-      {/* Method Overview */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Proposed Method
-              </h2>
-
-              <div className="columns is-multiline">
-                <div className="column is-one-third">
-                  <div className="box has-equal-height">
-                    <h3 className="title is-4">Baseline Architecture</h3>
-                    <ul>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">U-Net++</span>{" "}
-                        with nested skip connections
-                      </li>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          Attention Gates
-                        </span>{" "}
-                        for feature refinement
-                      </li>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          EfficientNet-B0
-                        </span>{" "}
-                        encoder
-                      </li>
-                      <li className="mb-1">
-                        • Selected through systematic ablation (9 baselines
-                        tested)
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="column is-one-third">
-                  <div className="box has-equal-height">
-                    <h3 className="title is-4">TFFM: Graph-Based Reasoning</h3>
-                    <ul>
-                      <li className="mb-1">
-                        • Maps features to{" "}
-                        <span className="has-text-weight-medium">
-                          latent graph space
-                        </span>
-                      </li>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          Graph Attention Networks (GAT)
-                        </span>{" "}
-                        for connectivity
-                      </li>
-                      <li className="mb-1">
-                        • Multi-level deployment (5 decoder levels)
-                      </li>
-                      <li className="mb-1">
-                        • Adaptive pooling: 20×20 to 32×32 grid
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="column is-one-third">
-                  <div className="box has-equal-height">
-                    <h3 className="title is-4">Hybrid Loss Function</h3>
-                    <ul>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          Tversky Loss
-                        </span>{" "}
-                        (α=0.65): recall-weighted
-                      </li>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          soft clDice Loss
-                        </span>
-                        : topology preservation
-                      </li>
-                      <li className="mb-1">
-                        •{" "}
-                        <span className="has-text-weight-medium">
-                          Combined weight
-                        </span>
-                        : L<sub>total</sub> = L<sub>Tv</sub> + 0.5·L
-                        <sub>clDice</sub>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="box mt-5">
-                <h3 className="title is-4">Key Innovations</h3>
-                <div className="columns is-multiline">
-                  <div className="column is-half">
-                    <div className="key-innovation">
-                      <h4 className="title is-5">
-                        1. Architecture-Integrated Topology Preservation
-                      </h4>
-                      <p>
-                        TFFM directly models global connectivity at the feature
-                        extraction level
-                      </p>
-                    </div>
-                  </div>
-                  <div className="column is-half">
-                    <div className="key-innovation">
-                      <h4 className="title is-5">
-                        2. Hybrid Topology-Aware Objective
-                      </h4>
-                      <p>Combines region overlap with skeleton similarity</p>
-                    </div>
-                  </div>
-                  <div className="column is-half">
-                    <div className="key-innovation">
-                      <h4 className="title is-5">
-                        3. Comprehensive Topological Evaluation
-                      </h4>
-                      <p>
-                        Evaluates beyond Dice/IoU: clDice, Betti error, junction
-                        detection
-                      </p>
-                    </div>
-                  </div>
-                  <div className="column is-half">
-                    <div className="key-innovation">
-                      <h4 className="title is-5">
-                        4. Cross-Dataset Validation
-                      </h4>
-                      <p>Zero-shot inference on 5 external benchmarks</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          {/* Visualization Selection */}
+          <div className="mb-8">
+            <div className="flex flex-wrap gap-2 justify-center">
+              {[
+                {
+                  id: "comparison",
+                  label: "Architecture Comparison",
+                },
+                { id: "ablation", label: "Ablation Study" },
+                // { id: "cross-dataset", label: "Cross-Dataset" },
+                { id: "radar", label: "Radar Profile" },
+                {
+                  id: "parallel",
+                  label: "Parallel Coordinates",
+                },
+              ].map((view) => (
+                <button
+                  key={view.id}
+                  onClick={() => setPlotView(view.id)}
+                  className={`px-4 py-2 rounded font-medium text-sm transition ${
+                    plotView === view.id
+                      ? "bg-neutral-800 text-white"
+                      : "bg-white text-neutral-700 border border-neutral-300 hover:bg-neutral-50"
+                  }`}
+                >
+                  {view.label}
+                </button>
+              ))}
             </div>
           </div>
+
+          {/* Plot Container with responsive grid for radar */}
+          {plotView === "radar" ? (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+              {[
+                "Baseline",
+                "+ TFFM",
+                "+ clDice Loss",
+                "Full (+ Augmentation)",
+              ].map((_, idx) => (
+                <div
+                  key={idx}
+                  className="bg-white rounded border border-neutral-300 p-6 shadow-sm"
+                >
+                  <div id={`radar-plot-${idx}`} className="w-full h-80"></div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="bg-white rounded border border-neutral-300 p-6 shadow-sm mb-8">
+              <div
+                id={
+                  plotView === "comparison"
+                    ? "architecture-plot"
+                    : plotView === "ablation"
+                    ? "ablation-plot"
+                    : "parallel-plot"
+                }
+                className="w-full h-96"
+              ></div>
+            </div>
+          )}
         </div>
       </section>
 
-      <div className="section-divider"></div>
+      {/* Cross-Dataset Section */}
+      <section className="py-16 bg-neutral-50">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
+            Cross-Dataset Generalization
+          </h2>
 
-      <div className="section-divider"></div>
-
-      {/* Comprehensive Results Section */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Comprehensive Experimental Results
-              </h2>
-
-              {/* Final Results - Interactive Tabs */}
-              <div className="box mb-6 tab-container">
-                <div className="tabs is-toggle is-fullwidth">
-                  {(["combined", "artery", "vein"] as const).map((tab) => (
-                    <li
-                      key={tab}
-                      className={activeTab === tab ? "is-active" : ""}
-                    >
-                      <a onClick={() => setActiveTab(tab)}>
-                        {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                      </a>
-                    </li>
-                  ))}
-                </div>
-
-                <h3 className="title is-4 mb-4 has-text-centered">
-                  Final Model Performance
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div className="lg:col-span-1 bg-white rounded border border-neutral-300 p-6 shadow-sm">
+              <div id="cross-dataset-plot" className="w-full h-96"></div>
+            </div>
+            <div className="lg:col-span-2 bg-white rounded border border-neutral-300 shadow-sm">
+              <div className="px-6 py-4 border-b border-neutral-300">
+                <h3 className="text-xl font-bold text-neutral-800">
+                  Cross-Dataset Results
                 </h3>
-
-                <div className="metric-container">
-                  <div className="metric-box">
-                    <h4>Dice Score</h4>
-                    <div className="value">{finalResults[activeTab].dice}%</div>
-                    <div className="description">Pixel overlap accuracy</div>
-                  </div>
-                  <div className="metric-box">
-                    <h4>clDice</h4>
-                    <div className="value">
-                      {finalResults[activeTab].clDice}%
-                    </div>
-                    <div className="description">
-                      Skeleton similarity metric
-                    </div>
-                  </div>
-                  <div className="metric-box">
-                    <h4>HD95</h4>
-                    <div className="value">
-                      {finalResults[activeTab].hd95}px
-                    </div>
-                    <div className="description">
-                      95th percentile Hausdorff distance
-                    </div>
-                  </div>
-                  <div className="metric-box">
-                    <h4>Components</h4>
-                    <div className="value">
-                      {Math.round(finalResults[activeTab].components)}
-                    </div>
-                    <div className="description">
-                      Number of disconnected vessel segments
-                    </div>
-                  </div>
-                </div>
               </div>
 
-              {/* Architecture Comparison Table */}
-              <div className="box mb-6">
-                <div className="table-header">
-                  <h3 className="title is-4">
-                    Step 1: Baseline Architecture Selection
-                  </h3>
-                  <p className="table-description">
-                    We evaluated multiple encoder-decoder architectures to
-                    establish a strong baseline for topological enhancement.
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead className="bg-neutral-800 text-white">
+                    <tr>
+                      {[
+                        "Dataset",
+                        "Dice (%)",
+                        "HD95 (px)",
+                        "clDice (%)",
+                        "Betti Error",
+                        "Junction F1 (%)",
+                      ].map((header, idx) => (
+                        <th
+                          key={idx}
+                          onClick={() =>
+                            handleSort(header.split(" ")[0].toLowerCase())
+                          }
+                          className="px-6 py-4 text-left text-sm font-semibold cursor-pointer hover:bg-neutral-900 transition"
+                        >
+                          {header}
+                          {sortConfig.key ===
+                            header.split(" ")[0].toLowerCase() && (
+                            <i
+                              className={`fas fa-sort-${
+                                sortConfig.direction === "asc" ? "up" : "down"
+                              } ml-2`}
+                            ></i>
+                          )}
+                        </th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {sortedCrossDataset.map((row, idx) => (
+                      <tr
+                        key={idx}
+                        onClick={() => setSelectedDataset(row.name)}
+                        className={`border-b border-neutral-200 hover:bg-neutral-50 cursor-pointer transition text-sm ${
+                          selectedDataset === row.name
+                            ? "bg-green-50"
+                            : idx === 0
+                            ? "bg-neutral-50 font-semibold"
+                            : ""
+                        }`}
+                      >
+                        <td className="px-6 py-4 font-medium text-neutral-800">
+                          {row.name}
+                        </td>
+                        <td className="px-6 py-4 text-center">{row.dice}</td>
+                        <td className="px-6 py-4 text-center">{row.hd95}</td>
+                        <td className="px-6 py-4 text-center">{row.clDice}</td>
+                        <td className="px-6 py-4 text-center">{row.betti}</td>
+                        <td className="px-6 py-4 text-center">{row.juncF1}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              {selectedDataset && (
+                <div className="px-6 py-4 bg-green-50 border-t border-neutral-300">
+                  <p className="text-sm text-neutral-700">
+                    <strong className="text-neutral-800">Selected:</strong>{" "}
+                    {selectedDataset}
                   </p>
                 </div>
-                <div className="table-caption">
-                  Table 1: Architecture Comparison on Fundus-AVSeg Dataset
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-30">Architecture</th>
-                        <th className="table-col-20 text-center">Dice (%)</th>
-                        <th className="table-col-20 text-center">IoU (%)</th>
-                        <th className="table-col-30 text-center">HD95 (px)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {architectureComparison.map((row, idx) => (
-                        <tr
-                          key={idx}
-                          className={
-                            row.name === "TFFM (Final)" ? "highlight-row" : ""
-                          }
-                        >
-                          <td className="has-text-weight-medium">{row.name}</td>
-                          <td className="text-center">{row.dice}</td>
-                          <td className="text-center">{row.iou}</td>
-                          <td className="text-center">{row.hd95}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: U-Net++ with Attention Gates showed the best balance of
-                  accuracy and efficiency as our baseline architecture
-                </div>
-              </div>
-
-              {/* Loss Function Comparison */}
-              <div className="box mb-6">
-                <div className="table-header">
-                  <h3 className="title is-4">
-                    Step 2: Loss Function Optimization
-                  </h3>
-                  <p className="table-description">
-                    We compared multiple loss functions to balance pixel
-                    accuracy with topological coherence.
-                  </p>
-                </div>
-                <div className="table-caption">
-                  Table 2: Loss Function Comparison (Baseline Architecture)
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-25">Loss Function</th>
-                        <th className="table-col-20 text-center">Dice (%)</th>
-                        <th className="table-col-25 text-center">
-                          Topology Error
-                        </th>
-                        <th className="table-col-30 text-center">
-                          Fragmentation
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lossComparison.map((row, idx) => (
-                        <tr key={idx}>
-                          <td className="has-text-weight-medium">{row.name}</td>
-                          <td className="text-center">{row.dice}</td>
-                          <td className="text-center">{row.topology}</td>
-                          <td className="text-center">{row.fragmentation}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: Tversky loss (α=0.65) achieved the best balance of
-                  recall (vessel coverage) and topology preservation
-                </div>
-              </div>
-
-              {/* Encoder Comparison */}
-              <div className="box mb-6">
-                <div className="table-header">
-                  <h3 className="title is-4">Step 3: Encoder Selection</h3>
-                  <p className="table-description">
-                    We evaluated multiple backbone encoders to optimize feature
-                    extraction for vessel topology.
-                  </p>
-                </div>
-                <div className="table-caption">
-                  Table 3: Encoder Backbone Comparison
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-30">Encoder</th>
-                        <th className="table-col-20 text-center">
-                          Artery Dice (%)
-                        </th>
-                        <th className="table-col-20 text-center">
-                          Vein Dice (%)
-                        </th>
-                        <th className="table-col-30 text-center">
-                          Betti Error
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {encoderComparison.map((row, idx) => (
-                        <tr
-                          key={idx}
-                          className={
-                            row.name === "EfficientNet-B0 (Selected)"
-                              ? "highlight-row"
-                              : ""
-                          }
-                        >
-                          <td className="has-text-weight-medium">{row.name}</td>
-                          <td className="text-center">{row.arteryDice}</td>
-                          <td className="text-center">{row.veinDice}</td>
-                          <td className="text-center">{row.betti}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: EfficientNet-B0 provided the optimal balance of
-                  accuracy, topology preservation, and computational efficiency
-                </div>
-              </div>
-
-              {/* Ablation Study */}
-              <div className="box">
-                <div className="is-flex is-justify-content-space-between is-align-items-center mb-4">
-                  <h3 className="title is-4">
-                    Step 4: Topological Refinement (TFFM Ablation)
-                  </h3>
-                  <button
-                    onClick={() => setShowAblation(!showAblation)}
-                    className="button is-dark is-rounded"
-                  >
-                    {showAblation ? "Hide" : "Show"} Details
-                  </button>
-                </div>
-
-                {showAblation && (
-                  <div className="message is-info mb-4 has-visual-padding">
-                    <div className="message-header">
-                      <p>Ablation Strategy</p>
-                    </div>
-                    <div className="message-body">
-                      <ul>
-                        <li className="mb-1">
-                          •{" "}
-                          <span className="has-text-weight-medium">
-                            Baseline:
-                          </span>{" "}
-                          U-Net++ (Attn) + EfficientNet-B0 + Tversky Loss
-                        </li>
-                        <li className="mb-1">
-                          •{" "}
-                          <span className="has-text-weight-medium">
-                            + TFFM:
-                          </span>{" "}
-                          Add Topology-aware Feature Fusion Module
-                        </li>
-                        <li className="mb-1">
-                          •{" "}
-                          <span className="has-text-weight-medium">
-                            + clDice Loss:
-                          </span>{" "}
-                          Replace loss with Tversky + soft clDice hybrid
-                        </li>
-                        <li className="mb-1">
-                          •{" "}
-                          <span className="has-text-weight-medium">
-                            + Augmentation:
-                          </span>{" "}
-                          Apply comprehensive data augmentation pipeline
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-
-                <div className="table-caption">
-                  Table 4: Ablation Study of Topological Components
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-30">Configuration</th>
-                        <th className="table-col-15 text-center">Dice (%)</th>
-                        <th className="table-col-15 text-center">clDice (%)</th>
-                        <th className="table-col-20 text-center">
-                          Betti Error
-                        </th>
-                        <th className="table-col-20 text-center">
-                          Junction F1 (%)
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {ablationStudy.map((row, idx) => (
-                        <tr
-                          key={idx}
-                          className={
-                            row.name === "Full (+ Augmentation)"
-                              ? "highlight-row has-text-weight-bold"
-                              : ""
-                          }
-                        >
-                          <td className="has-text-weight-medium">{row.name}</td>
-                          <td className="text-center">{row.dice}</td>
-                          <td className="text-center">{row.clDice}</td>
-                          <td className="text-center">{row.betti}</td>
-                          <td className="text-center">{row.juncF1}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: Each component contributes significantly to topological
-                  preservation, with TFFM module and clDice loss providing the
-                  most substantial improvements
-                </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </section>
 
-      <div className="section-divider"></div>
+      {/* Ablation Study Section */}
+      <section className="py-16 bg-neutral-50">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
+            Ablation Study: Progressive Enhancement
+          </h2>
 
-      {/* Cross-Dataset Generalization */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Cross-Dataset Generalization & Robustness
-              </h2>
-
-              <div className="box mb-6">
-                <div className="table-header">
-                  <h3 className="title is-5">
-                    Zero-Shot Inference on 5 External Benchmarks
-                  </h3>
-                  <p className="table-description">
-                    Model trained on Fundus-AVSeg, tested directly on DRIVE,
-                    CHASEDB1, HRF, RETA, STARE
-                  </p>
-                </div>
-
-                <div className="table-caption">
-                  Table 5: Cross-Dataset Generalization Performance
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-25">Dataset</th>
-                        <th className="table-col-15 text-center">Dice (%)</th>
-                        <th className="table-col-15 text-center">HD95 (px)</th>
-                        <th className="table-col-15 text-center">clDice (%)</th>
-                        <th className="table-col-15 text-center">
-                          Betti Error
-                        </th>
-                        <th className="table-col-15 text-center">
-                          Junc-F1 (%)
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {crossDataset.map((row, idx) => (
-                        <tr
-                          key={idx}
-                          className={
-                            idx === 0
-                              ? "highlight-row has-text-weight-bold"
-                              : ""
-                          }
-                        >
-                          <td className="has-text-weight-medium">{row.name}</td>
-                          <td className="text-center">{row.dice}</td>
-                          <td className="text-center">{row.hd95}</td>
-                          <td className="text-center">{row.clDice}</td>
-                          <td className="text-center">{row.betti}</td>
-                          <td className="text-center">{row.juncF1}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: TFFM demonstrates strong generalization across diverse
-                  datasets, maintaining topology preservation even when
-                  pixel-level metrics decrease
-                </div>
-              </div>
-
-              <div className="columns">
-                <div className="column">
-                  <div className="box">
-                    <h4 className="title is-4 has-text-success">✓ Strengths</h4>
-                    <ul>
-                      <li className="mb-3">
-                        <span className="icon has-text-success mr-2">
-                          <i className="fas fa-check"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            Consistent topology preservation:
-                          </span>{" "}
-                          clDice maintains 68-74% across datasets
-                        </span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="icon has-text-success mr-2">
-                          <i className="fas fa-check"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            Strong on similar domains:
-                          </span>{" "}
-                          DRIVE (82.1%) and RETA (82.2%)
-                        </span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="icon has-text-success mr-2">
-                          <i className="fas fa-check"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            Low connectivity errors:
-                          </span>{" "}
-                          DRIVE shows lowest Betti-Error (24.2)
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="column">
-                  <div className="box">
-                    <h4 className="title is-4 has-text-warning">
-                      ⚠️ Challenges
-                    </h4>
-                    <ul>
-                      <li className="mb-3">
-                        <span className="icon has-text-warning mr-2">
-                          <i className="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            CHASEDB1 fragmentation:
-                          </span>{" "}
-                          Pediatric vasculature (Betti=50.5)
-                        </span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="icon has-text-warning mr-2">
-                          <i className="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            STARE pathology:
-                          </span>{" "}
-                          High myopia cases (HD95=33.25)
-                        </span>
-                      </li>
-                      <li className="mb-3">
-                        <span className="icon has-text-warning mr-2">
-                          <i className="fas fa-exclamation-triangle"></i>
-                        </span>
-                        <span>
-                          <span className="has-text-weight-medium">
-                            Junction detection limits:
-                          </span>{" "}
-                          Recall 0.44-0.52
-                        </span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-
-              <div className="highlight-box info mt-5">
-                <h4 className="title is-5">Clinical Translation Insight</h4>
-                <p>
-                  While pixel-level metrics (Dice) show expected performance
-                  degradation on external datasets, our topology-focused metrics
-                  (clDice, Betti error) remain remarkably consistent. This
-                  demonstrates TFFM's robustness to domain shifts and its
-                  clinical viability for automated biomarker extraction across
-                  diverse patient populations and imaging conditions.
-                </p>
-              </div>
+          <div className="bg-white rounded border border-neutral-300 shadow-sm p-6 mb-8">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+              <h3 className="text-xl font-bold text-neutral-800">
+                Module-Wise Impact
+              </h3>
+              <button
+                onClick={() => setShowAblation(!showAblation)}
+                className="px-4 py-2 bg-neutral-800 text-white rounded font-medium text-sm hover:bg-neutral-900 transition"
+              >
+                {showAblation ? "Hide" : "Show"} Strategy
+              </button>
             </div>
-          </div>
-        </div>
-      </section>
 
-      <div className="section-divider"></div>
-
-      {/* Data Augmentation */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Data Augmentation Pipeline
-              </h2>
-
-              <div className="box">
-                <div className="table-header">
-                  <h3 className="title is-4">Data Augmentation Strategies</h3>
-                  <p className="table-description">
-                    Comprehensive data augmentation was essential for training a
-                    robust model that generalizes well to unseen data. Our
-                    pipeline includes geometric transformations, intensity
-                    variations, and noise injection specifically designed to
-                    improve topology preservation.
-                  </p>
-                </div>
-
-                <div className="table-caption">
-                  Table 6: Data Augmentation Strategies and Parameters
-                </div>
-                <div className="table-container">
-                  <table className="elegant-table">
-                    <thead>
-                      <tr>
-                        <th className="table-col-50">Technique</th>
-                        <th className="table-col-50 text-center">Parameters</th>
-                        {/* <th className="table-col-40 text-center">
-                          Probability
-                        </th> */}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {augmentationStrategies.map((aug, idx) => (
-                        <tr key={idx}>
-                          <td className="has-text-weight-medium">{aug.name}</td>
-                          <td className="text-center has-text-weight-light">
-                            {aug.range}
-                          </td>
-                          {/* <td className="text-center">
-                            {(aug.probability * 100).toFixed(0)}%
-                          </td> */}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-                <div className="table-footer">
-                  Note: Augmentation strategies were carefully selected to
-                  preserve topology while increasing robustness to imaging
-                  variations
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <div className="section-divider"></div>
-
-      {/* Conclusion */}
-      <section className="section">
-        <div className="container is-max-desktop">
-          <div className="columns is-centered">
-            <div className="column is-four-fifths">
-              <h2 className="title is-3 has-text-centered section-header">
-                Conclusion & Impact
-              </h2>
-
-              <div className="box mb-5">
-                <h3 className="title is-4">Key Findings</h3>
-                <ul>
-                  <li className="mb-2">
-                    <span className="icon has-text-primary mr-2">
-                      <i className="fas fa-arrow-right"></i>
-                    </span>
-                    <span>
-                      TFFM addresses the disconnect between pixel-level accuracy
-                      and topological validity
-                    </span>
-                  </li>
-                  <li className="mb-2">
-                    <span className="icon has-text-primary mr-2">
-                      <i className="fas fa-arrow-right"></i>
-                    </span>
-                    <span>
-                      Architecture-integrated topology reasoning outperforms
-                      loss-only approaches
-                    </span>
-                  </li>
-                  <li className="mb-2">
-                    <span className="icon has-text-primary mr-2">
-                      <i className="fas fa-arrow-right"></i>
-                    </span>
-                    <span>
-                      38% fragmentation reduction while maintaining high Dice
-                      (90.97%)
-                    </span>
-                  </li>
-                  <li className="mb-2">
-                    <span className="icon has-text-primary mr-2">
-                      <i className="fas fa-arrow-right"></i>
-                    </span>
-                    <span>
-                      Cross-dataset evaluation confirms robust topology
-                      preservation
-                    </span>
-                  </li>
-                </ul>
-              </div>
-
-              <div className="box">
-                <h3 className="title is-4">Clinical Significance</h3>
-                <p className="mb-3">
-                  Topologically coherent segmentations viable for automated
-                  biomarker quantification in cardiovascular disease screening:
-                </p>
-                <ul>
-                  <li>• Automated tortuosity quantification</li>
+            {showAblation && (
+              <div className="bg-neutral-50 rounded p-4 mb-6 border border-neutral-300">
+                <h4 className="font-bold text-neutral-800 mb-3">
+                  Ablation Strategy
+                </h4>
+                <ul className="space-y-2 text-neutral-700 text-sm">
                   <li>
-                    • Artery-vein classification with graph-based features
+                    • <strong>Baseline:</strong> U-Net++ (Attn) +
+                    EfficientNet-B0 + Tversky Loss
                   </li>
-                  <li>• Bifurcation point detection and analysis</li>
-                  <li>• Clinical decision support with reliable topology</li>
+                  <li>
+                    • <strong>+ TFFM:</strong> Add Topology-aware Feature Fusion
+                    Module
+                  </li>
+                  <li>
+                    • <strong>+ clDice Loss:</strong> Replace loss with Tversky
+                    + soft clDice hybrid
+                  </li>
+                  <li>
+                    • <strong>+ Augmentation:</strong> Apply comprehensive data
+                    augmentation pipeline
+                  </li>
                 </ul>
-                <div className="highlight-box success mt-4">
-                  <p>
-                    <strong>Clinical Impact:</strong> By preserving vascular
-                    topology, TFFM enables direct translation of segmentation
-                    results to clinical biomarkers without requiring
-                    post-processing to reconnect fragmented vessels, potentially
-                    accelerating diagnostic workflows for cardiovascular disease
-                    screening.
-                  </p>
-                </div>
               </div>
+            )}
+
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-neutral-800 text-white">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-sm font-semibold">
+                      Configuration
+                    </th>
+                    <th className="px-4 py-4 text-center text-sm font-semibold">
+                      Dice (%)
+                    </th>
+                    <th className="px-4 py-4 text-center text-sm font-semibold">
+                      clDice (%)
+                    </th>
+                    <th className="px-4 py-4 text-center text-sm font-semibold">
+                      Betti Error
+                    </th>
+                    <th className="px-4 py-4 text-center text-sm font-semibold">
+                      Junction F1
+                    </th>
+                    <th className="px-4 py-4 text-center text-sm font-semibold">
+                      Components
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {ablationStudy.map((row, idx) => (
+                    <tr
+                      key={idx}
+                      onClick={() => setSelectedModel(row.name)}
+                      className={`border-b border-neutral-200 hover:bg-neutral-50 cursor-pointer transition text-sm ${
+                        selectedModel === row.name
+                          ? "bg-green-50"
+                          : idx === ablationStudy.length - 1
+                          ? "bg-neutral-50 font-semibold"
+                          : ""
+                      }`}
+                    >
+                      <td className="px-6 py-4 font-medium text-neutral-800">
+                        {row.name}
+                      </td>
+                      <td className="px-4 py-4 text-center">{row.dice}</td>
+                      <td className="px-4 py-4 text-center">{row.clDice}</td>
+                      <td className="px-4 py-4 text-center">{row.betti}</td>
+                      <td className="px-4 py-4 text-center">{row.juncF1}</td>
+                      <td className="px-4 py-4 text-center">
+                        {row.components}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
