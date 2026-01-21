@@ -51,4 +51,4 @@ npm run deploy
 
 ## 📄 License
 
-MIT License - see the LICENSE file for details.
+see the LICENSE file for details.
