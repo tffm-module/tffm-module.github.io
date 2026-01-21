@@ -653,8 +653,8 @@ const CrossDatasetSection = () => {
                         selectedDataset === row.name
                           ? "bg-green-50"
                           : idx === 0
-                          ? "bg-neutral-100 font-semibold"
-                          : ""
+                            ? "bg-neutral-100 font-semibold"
+                            : ""
                       }`}
                     >
                       <td className="px-6 py-4 font-medium text-neutral-800">
@@ -756,9 +756,6 @@ const AblationStudySection = () => {
                   <th className="px-4 py-4 text-center text-sm font-semibold">
                     Junction F1
                   </th>
-                  <th className="px-4 py-4 text-center text-sm font-semibold">
-                    Components
-                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -770,8 +767,8 @@ const AblationStudySection = () => {
                       selectedModel === row.name
                         ? "bg-green-50"
                         : idx === ABLATION_STUDY.length - 1
-                        ? "bg-neutral-100 font-semibold"
-                        : ""
+                          ? "bg-neutral-100 font-semibold"
+                          : ""
                     }`}
                   >
                     <td className="px-6 py-4 font-medium text-neutral-800">
@@ -781,7 +778,6 @@ const AblationStudySection = () => {
                     <td className="px-4 py-4 text-center">{row.clDice}</td>
                     <td className="px-4 py-4 text-center">{row.betti}</td>
                     <td className="px-4 py-4 text-center">{row.juncF1}</td>
-                    <td className="px-4 py-4 text-center">{row.components}</td>
                   </tr>
                 ))}
               </tbody>
