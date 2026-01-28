@@ -1,5 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
-import * as Plotly from "plotly.js-dist-min";
+import { useState, useMemo } from "react";
 
 // Types
 interface FinalResult {
@@ -515,53 +514,6 @@ const CrossDatasetSection = () => {
     direction: "asc",
   });
 
-  const createCrossDatasetPlot = () => {
-    const trace1: Partial<Plotly.PlotData> = {
-      type: "scatterpolar",
-      r: CROSS_DATASET.map((d) => d.dice),
-      theta: CROSS_DATASET.map((d) => d.name),
-      fill: "toself",
-      name: "Dice",
-      marker: { color: "#22d3ee" },
-      fillcolor: "#22d3ee40",
-    };
-
-    const trace2: Partial<Plotly.PlotData> = {
-      type: "scatterpolar",
-      r: CROSS_DATASET.map((d) => d.clDice),
-      theta: CROSS_DATASET.map((d) => d.name),
-      fill: "toself",
-      name: "clDice",
-      marker: { color: "#8b5cf6" },
-      fillcolor: "#8b5cf640",
-    };
-
-    const layout: Partial<Plotly.Layout> = {
-      polar: {
-        radialaxis: { visible: true, range: [0, 100] },
-      },
-      showlegend: true,
-      plot_bgcolor: "#f8fafc",
-      paper_bgcolor: "#ffffff",
-      font: { family: "Inter, sans-serif" },
-      margin: { l: 80, r: 80, t: 80, b: 80 },
-      legend: { x: 1.1, y: 1 },
-    };
-
-    const element = document.getElementById("cross-dataset-plot");
-    if (element) {
-      Plotly.newPlot(element, [trace1, trace2], layout, { responsive: true });
-    }
-  };
-
-  useEffect(() => {
-    try {
-      createCrossDatasetPlot();
-    } catch (error) {
-      console.error("Error creating cross-dataset plot:", error);
-    }
-  }, []);
-
   const handleSort = (key: string) => {
     let direction: SortDirection = "asc";
     if (sortConfig.key === key && sortConfig.direction === "asc") {
@@ -612,12 +564,8 @@ const CrossDatasetSection = () => {
           Cross-Dataset Generalization
         </h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-1 bg-white rounded border border-neutral-300 p-6 shadow-sm">
-            <div id="cross-dataset-plot" className="w-full h-96"></div>
-          </div>
-
-          <div className="lg:col-span-2 bg-white rounded border border-neutral-300 shadow-sm">
+        <div className="grid grid-cols-1 gap-6">
+          <div className="bg-white rounded border border-neutral-300 shadow-sm">
             <div className="px-6 py-4 border-b border-neutral-300">
               <h3 className="text-xl font-bold text-neutral-800">
                 Cross-Dataset Results

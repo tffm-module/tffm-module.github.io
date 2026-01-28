@@ -1,5 +1,5 @@
-import overallArchitecture from "../assets/comparison/overall-architecture_page-0001.jpg";
-import tffmArchitecture from "../assets/comparison/TFFM.jpg";
+import overallArchitecture from "../assets/comparison/overall-architecture_page-0001.webp";
+import tffmArchitecture from "../assets/comparison/TFFM.webp";
 
 interface ModelArchitectureSectionProps {
   id?: string;

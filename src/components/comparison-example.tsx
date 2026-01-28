@@ -3,7 +3,7 @@ import baselineArtery from "../assets/comparison/baseline_artery.png";
 import tffmArtery from "../assets/comparison/tffm_artery.png";
 import baselineVein from "../assets/comparison/baseline_vein.png";
 import tffmVein from "../assets/comparison/tffm_vein.png";
-import visualizationImg from "../assets/comparison/visualization.jpg";
+import visualizationImg from "../assets/comparison/visualization.webp";
 
 const comparisonSections = [
   {
