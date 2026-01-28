@@ -53,6 +53,13 @@ export default function HeadingSection() {
     },
   ];
 
+  const INFO = {
+    paper: "https://arxiv.org/abs/2601.19136",
+    arxiv: "https://arxiv.org/abs/2601.19136",
+    bibtex: "#citation",
+    code: "https://github.com/tffm-module/tffm-code",
+  };
+
   /* Build affiliation index automatically */
   const affiliations = Array.from(new Set(authors.map((a) => a.affiliation)));
 
@@ -106,7 +113,8 @@ export default function HeadingSection() {
           <div className="mb-8 text-sm text-neutral-600">
             {affiliations.map((aff, idx) => (
               <span key={idx} className="mx-2">
-                <sup>{idx + 1}</sup> {aff}
+                <sup>{idx + 1}</sup> {aff}{" "}
+                {idx < affiliations.length - 1 && ","}
               </span>
             ))}
           </div>
@@ -115,36 +123,36 @@ export default function HeadingSection() {
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-3">
           <a
-            href="#pdf"
-            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            href={INFO.paper}
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaFilePdf /> Paper
           </a>
 
           <a
-            href="#arxiv"
-            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            href={INFO.arxiv}
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <SiArxiv /> arXiv
           </a>
 
           <a
-            href="#citation"
-            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            href={INFO.bibtex}
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaQuoteRight /> BibTeX
           </a>
 
           <a
-            href="#code"
-            className="pointer-events-none inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+            href={INFO.code}
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaGithub /> Code
           </a>
         </div>
-        <div className="mt-5">
+        {/* <div className="mt-5">
           <em className="text-rose-700">Soon will be updated!</em>
-        </div>
+        </div> */}
       </div>
     </section>
   );
