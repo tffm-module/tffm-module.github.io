@@ -126,6 +126,8 @@ export default function HeadingSection() {
         {/* Action Buttons */}
         <div className="flex flex-wrap justify-center gap-3">
           <a
+            target="_blank"
+            rel="noreferrer"
             href={INFO.paper}
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
@@ -133,6 +135,8 @@ export default function HeadingSection() {
           </a>
 
           <a
+            target="_blank"
+            rel="noreferrer"
             href={INFO.arxiv}
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
@@ -140,6 +144,8 @@ export default function HeadingSection() {
           </a>
 
           <a
+            target="_blank"
+            rel="noreferrer"
             href={INFO.bibtex}
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
@@ -147,6 +153,8 @@ export default function HeadingSection() {
           </a>
 
           <a
+            target="_blank"
+            rel="noreferrer"
             href={INFO.code}
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
@@ -154,6 +162,8 @@ export default function HeadingSection() {
           </a>
 
           <a
+            target="_blank"
+            rel="noreferrer"
             href={INFO.presentation}
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
