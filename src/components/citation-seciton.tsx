@@ -10,14 +10,13 @@ export default function CitationSection({
 }: CitationSectionProps) {
   const [copied, setCopied] = useState(false);
 
-  const bibTeX = `@misc{ahmed2026tffmtopologyawarefeaturefusion,
-      title={TFFM: Topology-Aware Feature Fusion Module via Latent Graph Reasoning for Retinal Vessel Segmentation}, 
-      author={Iftekhar Ahmed and Shakib Absar and Aftar Ahmad Sami and Shadman Sakib and Debojyoti Biswas and Seraj Al Mahmud Mostafa},
-      year={2026},
-      eprint={2601.19136},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2601.19136}, 
+  const bibTeX = `@InProceedings{Ahmed_2026_WACV,
+    author    = {Ahmed, Iftekhar and Absar, Shakib and Sami, Aftar Ahmad and Sakib, Shadman and Biswas, Debojyoti and Al Mahmud Mostafa, Seraj},
+    title     = {TFFM: Topology-Aware Feature Fusion Module via Latent Graph Reasoning for Retinal Vessel Segmentation},
+    booktitle = {Proceedings of the IEEE/CVF Winter Conference on Applications of Computer Vision (WACV) Workshops},
+    month     = {March},
+    year      = {2026},
+    pages     = {359-368}
 }`;
 
   const handleCopyBibTeX = async () => {

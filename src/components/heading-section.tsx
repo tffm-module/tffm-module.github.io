@@ -1,4 +1,5 @@
 import { FaFilePdf, FaGithub, FaQuoteRight } from "react-icons/fa";
+import { HiOutlinePresentationChartLine } from "react-icons/hi";
 import { SiArxiv } from "react-icons/si";
 
 type Author = {
@@ -54,10 +55,12 @@ export default function HeadingSection() {
   ];
 
   const INFO = {
-    paper: "https://arxiv.org/abs/2601.19136",
+    paper:
+      "https://openaccess.thecvf.com/content/WACV2026W/P2P/papers/Ahmed_TFFM_Topology-Aware_Feature_Fusion_Module_via_Latent_Graph_Reasoning_for_WACVW_2026_paper.pdf",
     arxiv: "https://arxiv.org/abs/2601.19136",
     bibtex: "#citation",
     code: "https://github.com/tffm-module/tffm-code",
+    presentation: "https://youtu.be/WdfXZXfyrzI?si=XXtFM1WRo6DVb68Z",
   };
 
   /* Build affiliation index automatically */
@@ -148,6 +151,13 @@ export default function HeadingSection() {
             className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
           >
             <FaGithub /> Code
+          </a>
+
+          <a
+            href={INFO.presentation}
+            className="inline-flex items-center gap-2 rounded-full bg-neutral-800 px-5 py-2 text-sm font-medium text-white hover:bg-neutral-900"
+          >
+            <HiOutlinePresentationChartLine /> Presentation
           </a>
         </div>
         {/* <div className="mt-5">
