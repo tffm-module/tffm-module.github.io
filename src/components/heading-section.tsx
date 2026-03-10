@@ -56,7 +56,7 @@ export default function HeadingSection() {
 
   const INFO = {
     paper:
-      "https://openaccess.thecvf.com/content/WACV2026W/P2P/papers/Ahmed_TFFM_Topology-Aware_Feature_Fusion_Module_via_Latent_Graph_Reasoning_for_WACVW_2026_paper.pdf",
+      "https://openaccess.thecvf.com/content/WACV2026W/P2P/html/Ahmed_TFFM_Topology-Aware_Feature_Fusion_Module_via_Latent_Graph_Reasoning_for_WACVW_2026_paper.html",
     arxiv: "https://arxiv.org/abs/2601.19136",
     bibtex: "#citation",
     code: "https://github.com/tffm-module/tffm-code",
@@ -75,7 +75,15 @@ export default function HeadingSection() {
         </h1>
 
         {/* Venue */}
-        <p className="mb-4 text-xl font-medium text-neutral-700">{venue}</p>
+        <p className="my-4 text-xl font-medium text-neutral-700">{venue}</p>
+
+        <div className="my-4 flex justify-center">
+          <img
+            alt="venue-logo"
+            src="src\assets\venue-logo.webp"
+            className="w-60"
+          />
+        </div>
 
         {/* Authors */}
         <div className="mb-4 text-base text-blue-600">
