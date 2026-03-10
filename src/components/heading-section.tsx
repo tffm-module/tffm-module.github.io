@@ -1,6 +1,7 @@
 import { FaFilePdf, FaGithub, FaQuoteRight } from "react-icons/fa";
 import { HiOutlinePresentationChartLine } from "react-icons/hi";
 import { SiArxiv } from "react-icons/si";
+import venueLogo from "../assets/venue-logo.webp";
 
 type Author = {
   name: string;
@@ -78,11 +79,7 @@ export default function HeadingSection() {
         <p className="my-4 text-xl font-medium text-neutral-700">{venue}</p>
 
         <div className="my-4 flex justify-center">
-          <img
-            alt="venue-logo"
-            src="src\assets\venue-logo.webp"
-            className="w-60"
-          />
+          <img alt="venue-logo" src={venueLogo} className="w-60" />
         </div>
 
         {/* Authors */}
