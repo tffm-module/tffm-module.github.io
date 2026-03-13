@@ -68,7 +68,7 @@ export default function HeadingSection() {
   const affiliations = Array.from(new Set(authors.map((a) => a.affiliation)));
 
   return (
-    <section className="bg-neutral-200 py-20">
+    <section className="pt-20 pb-12">
       <div className="mx-auto max-w-5xl px-4 text-center">
         {/* Title */}
         <h1 className="mb-4 text-4xl font-semibold leading-tight tracking-tight text-neutral-900">

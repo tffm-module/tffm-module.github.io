@@ -558,14 +558,14 @@ const CrossDatasetSection = () => {
   ];
 
   return (
-    <section className="py-12 bg-neutral-100">
+    <section className="py-12">
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <h2 className="mb-12 text-center text-3xl font-semibold tracking-tight">
           Cross-Dataset Generalization
         </h2>
 
         <div className="grid grid-cols-1 gap-6">
-          <div className="bg-white rounded border border-neutral-300 shadow-sm">
+          <div className="rounded border border-neutral-300 shadow-sm">
             <div className="px-6 py-4 border-b border-neutral-300">
               <h3 className="text-xl font-bold text-neutral-800">
                 Cross-Dataset Results

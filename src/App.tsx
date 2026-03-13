@@ -1,10 +1,10 @@
 import AbstractSection from "./components/abstract-section";
 import CitationSection from "./components/citation-seciton";
 import ComparisonExample from "./components/comparison-example";
-import ResearchPageTFFM from "./components/experiment-section";
 import Footer from "./components/footer";
 import ModelArchitectureSection from "./components/model-architecture-section";
 import HeadingSection from "./components/heading-section";
+import ExperimentSection from "./components/experiment-section";
 
 export default function App() {
   return (
@@ -13,7 +13,7 @@ export default function App() {
       <AbstractSection />
       <ModelArchitectureSection />
       <ComparisonExample />
-      <ResearchPageTFFM />
+      <ExperimentSection />
       <CitationSection />
       <Footer />
     </div>
